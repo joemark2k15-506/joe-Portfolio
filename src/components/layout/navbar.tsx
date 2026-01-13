@@ -21,8 +21,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -126,9 +127,9 @@ export default function Navbar() {
             <span>Resume</span>
           </motion.button>
 
-          <div className={styles.themeSelectorWrapper}>
+          <div className={`${styles.themeSelectorWrapper} ${themeMenuOpen ? styles.themeOpen : ""}`}>
             <motion.button
-              onClick={toggleTheme}
+              onClick={() => setThemeMenuOpen(!themeMenuOpen)}
               className={styles.themeToggle}
               aria-label="Toggle theme"
               whileHover={{ scale: 1.1, rotate: 15 }}
@@ -153,9 +154,18 @@ export default function Navbar() {
               )}
             </motion.button>
             
-            <div className={styles.themeSelectorPopover}>
-              <ThemeSelector />
-            </div>
+            <AnimatePresence>
+              {themeMenuOpen && (
+                <motion.div 
+                  className={styles.themeSelectorPopover}
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                >
+                  <ThemeSelector />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -202,11 +212,6 @@ export default function Navbar() {
                   <FiDownload />
                   Download Resume
                 </button>
-              </div>
-
-              <div className={styles.mobileThemeSection}>
-                <p className={styles.mobileThemeTitle}>Switch Theme</p>
-                <ThemeSelector />
               </div>
             </motion.div>
           )}

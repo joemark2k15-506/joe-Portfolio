@@ -464,9 +464,11 @@
   }
 
   .marker {
-    width: 48px;
-    height: 48px;
-    font-size: 1.25rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+    box-shadow: 0 0 0 6px var(--background), 0 0 0 8px var(--primary),
+      0 0 20px var(--primary), 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -481,13 +483,14 @@
   }
 
   .cardContent {
-    margin-left: 60px;
+    margin-left: 70px;
+    padding: var(--space-md) var(--space-lg);
   }
 
   .markerWrapper {
     position: absolute;
     left: 0;
-    top: var(--space-xl);
+    top: var(--space-lg);
     transform: none;
   }
 }
