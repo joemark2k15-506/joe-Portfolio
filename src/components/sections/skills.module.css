@@ -1,0 +1,200 @@
+.skills {
+  background: var(--background);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-4xl);
+}
+
+.title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--space-md);
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.category {
+  margin-bottom: var(--space-4xl);
+}
+
+.categoryTitle {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-xl);
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: var(--space-md);
+}
+
+.categoryTitle::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-xl);
+}
+
+.card {
+  padding: var(--space-2xl);
+  border-radius: var(--radius-xl);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  
+  /* 3D Perspective */
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  
+  /* Glassmorphism effect */
+  backdrop-filter: blur(10px);
+  
+  /* 3D Shadow layers */
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  z-index: 0;
+  border-radius: var(--radius-xl);
+}
+
+.card:hover::before {
+  opacity: 0.2;
+  background: var(--brand-color);
+}
+
+.card:hover {
+  transform: translateY(-12px) rotateX(5deg) scale(1.05);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 12px 24px rgba(0, 0, 0, 0.15),
+    0 24px 48px rgba(0, 0, 0, 0.2),
+    0 0 20px var(--brand-color);
+  border-color: var(--brand-color);
+}
+
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
+  color: var(--brand-color);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  z-index: 1;
+  font-size: 2.5rem;
+
+  /* 3D Shadow Layers */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.iconWrapper svg {
+  filter: drop-shadow(0 0 8px var(--brand-color)) brightness(1.2);
+}
+
+.iconWrapper::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-lg);
+  background: var(--brand-color);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  filter: blur(8px);
+}
+
+.card:hover .iconWrapper {
+  background: var(--brand-color);
+  color: var(--background); /* Ensures contrast against brand color */
+  transform: translateY(-8px) scale(1.1);
+  box-shadow: 0 0 20px var(--brand-color);
+  border-color: white;
+}
+
+.card:hover .iconWrapper svg {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.mernIcons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  font-size: 1.2rem;
+}
+
+.mernIcons svg {
+  filter: none !important;
+}
+
+.card:hover .iconWrapper::before {
+  opacity: 0.6;
+}
+
+.skillName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: var(--space-sm);
+  transition: color 0.3s ease;
+}
+
+.card:hover .skillName {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .card {
+    padding: var(--space-xl);
+  }
+
+  .iconWrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .iconWrapper svg {
+    width: 32px;
+    height: 32px;
+  }
+}

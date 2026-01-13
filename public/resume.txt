@@ -1,0 +1,72 @@
+# Joe Mark M
+**MERN Stack Developer & Full-Stack Engineer**
+
+Madurai, Tamil Nadu, India  
+📧 joemark2k15@gmail.com | 📞 +91 82483 44143 | 🔗 github.com/joemark2k15-506
+
+---
+
+## Education
+
+**Master of Computer Applications (MCA)** - *Score: 75.9%*  
+Arul Anandar College, Madurai | Jul 2023 – May 2025
+
+**Bachelor of Commerce (Computer Applications)** - *Score: 68.5%*  
+Nadar Mahajan Sangam S. Vellaichamy Nadar College | Jul 2019 – Apr 2022
+
+---
+
+## Internship
+
+**MERN Stack Intern** | XYLOINC Technologies Pvt. Ltd.  
+*Sep 2024 – Oct 2024 | Coimbatore, Tamil Nadu*
+
+- Completed a one-month internship focused on MERN full-stack development
+- Worked with MongoDB, Express.js, React.js, and Node.js to build functional application modules
+- Gained hands-on experience in developing scalable, real-time web applications
+
+---
+
+## Certifications / Training
+
+**Full Stack Development Training** | Apollo Computer Education  
+*6 Months | Madurai, Tamil Nadu*
+
+**Java Full Stack Development:**
+- Java, JDBC, Servlets, JSP, Spring, Spring Boot, and Hibernate
+- Developed RESTful APIs, implemented MVC architecture
+- Gained experience with MySQL, Git version control, and deployment workflows
+
+**MERN Stack Development:**
+- MongoDB, Express.js, React.js, and Node.js
+- Built scalable full-stack applications using component-based UI architecture
+
+---
+
+## Projects
+
+### Consumer Goods Seller — *MERN Stack*
+- Designed a user-friendly interface using modular React components for smooth navigation
+- Implemented a dynamic product catalog with real-time content rendering
+- Developed a responsive seller page with form validation and submission handling
+- Applied a mobile-first design approach to ensure cross-device compatibility
+
+### Vibe Player — *React Native, Expo, TypeScript, FFmpeg*
+- Built an ultra-performance audio player optimized for local high-fidelity audio playback
+- Implemented real-time FFmpeg transcoding to support M4A/ALAC/FLAC formats without playback lag
+- Developed an efficient caching system for large audio files
+- Optimized UI animations using Reanimated 3 to maintain smooth 60fps performance on Android 12+
+
+---
+
+## Technical Skills
+
+**Languages:** HTML, CSS, JavaScript, TypeScript, Java  
+**Frameworks / Stacks:** React Native, MERN Stack, Java Full Stack  
+**Tools & Platforms:** GitHub, Expo, Vercel
+
+---
+
+## Languages
+
+Tamil, English
