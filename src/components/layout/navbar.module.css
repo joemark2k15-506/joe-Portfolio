@@ -311,6 +311,48 @@
   }
 
   .container {
-    padding: var(--space-md) var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
   }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .rightActions {
+    gap: var(--space-xs);
+  }
+
+  .resumeButton {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+
+  .resumeIcon {
+    font-size: 0.9rem;
+  }
+
+  .themeToggle {
+    display: none; /* Hide toggle on mobile header, move selector to menu */
+  }
+
+  .mobileMenu {
+    top: 60px;
+    padding-bottom: var(--space-xl);
+  }
+}
+
+.mobileThemeSection {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--glass-border);
+  margin-top: var(--space-sm);
+}
+
+.mobileThemeTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }

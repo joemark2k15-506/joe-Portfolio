@@ -203,6 +203,11 @@ export default function Navbar() {
                   Download Resume
                 </button>
               </div>
+
+              <div className={styles.mobileThemeSection}>
+                <p className={styles.mobileThemeTitle}>Switch Theme</p>
+                <ThemeSelector />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
