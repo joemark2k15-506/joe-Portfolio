@@ -8,8 +8,9 @@ import {
   SiMongodb, 
   SiSpringboot, 
   SiExpo, 
-  SiVercel,
-  SiExpress
+  SiExpress,
+  SiMysql,
+  SiNetlify
 } from "react-icons/si";
 import { FaJava, FaGithub } from "react-icons/fa6";
 import styles from "./skills.module.css";
@@ -98,12 +99,20 @@ const skills: Skill[] = [
     icon: <FaGithub />,
     color: "#F05032",
   },
+
   {
-    name: "Vercel",
+    name: "Netlify",
     category: "Tools",
     level: 85,
-    icon: <SiVercel />,
-    color: "#e2e2e2",
+    icon: <SiNetlify />,
+    color: "#00C7B7",
+  },
+  {
+    name: "MySQL",
+    category: "Backend",
+    level: 80,
+    icon: <SiMysql />,
+    color: "#4479A1",
   },
 ];
 

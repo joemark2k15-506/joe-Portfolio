@@ -33,8 +33,8 @@ export default function CommandPalette() {
 
   const downloadResume = () => {
     const link = document.createElement("a");
-    link.href = "/resume.txt";
-    link.download = "Joe_Mark_Resume.txt";
+    link.href = "/Joe-Resume.pdf?v=20260113";
+    link.download = "Joe-Mark-M-Resume.pdf";
     link.click();
     setOpen(false);
   };

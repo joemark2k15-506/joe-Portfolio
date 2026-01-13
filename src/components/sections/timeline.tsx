@@ -16,6 +16,14 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
+    id: 3,
+    year: "Jun - Nov 2025",
+    title: "Advanced Full Stack Training",
+    organization: "Apollo Computer Education, Madurai",
+    description: "Deep-dive into enterprise Java (Spring Boot, Hibernate) and modern MERN architectures. Crafted production-ready applications with component-driven UI.",
+    type: "work",
+  },
+  {
     id: 1,
     year: "2023 - 2025",
     title: "Master of Computer Applications",
@@ -29,14 +37,6 @@ const timelineData: TimelineItem[] = [
     title: "Full Stack Engineer Intern",
     organization: "XYLOINC Technologies, Coimbatore",
     description: "Architected and implemented scalable modules using the MERN stack. Focused on real-time data synchronization and high-performance React architectures.",
-    type: "work",
-  },
-  {
-    id: 3,
-    year: "6 Month Intensive",
-    title: "Advanced Full Stack Training",
-    organization: "Apollo Computer Education, Madurai",
-    description: "Deep-dive into enterprise Java (Spring Boot, Hibernate) and modern MERN architectures. Crafted production-ready applications with component-driven UI.",
     type: "work",
   },
   {
@@ -132,7 +132,7 @@ export default function Timeline() {
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            Temporal <span className="gradient-text">Voyage</span>
+            Career <span className="gradient-text">Roadmap</span>
           </motion.h2>
           <motion.p 
             className={styles.subtitle}
@@ -141,7 +141,7 @@ export default function Timeline() {
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            A high-fidelity chronicle of professional evolution and academic excellence.
+            A detailed timeline of my technical training, academic background, and industry experience.
           </motion.p>
         </div>
 

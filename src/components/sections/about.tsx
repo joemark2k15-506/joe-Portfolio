@@ -26,29 +26,30 @@ export default function About() {
       <div className="container">
         <div className={styles.grid}>
           <div className={styles.imageSection}>
-            <motion.div 
+            <motion.div
               className={styles.imageWrapper}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8 }}
             >
-              <Image 
-                src="/myimg1.png" 
-                alt="Joe Mark M" 
+              <Image
+                src="/myimg1.png"
+                alt="Joe Mark M"
                 width={800}
                 height={800}
                 className={styles.profileImage}
-                style={{ 
+                style={{
                   width: "100%",
-                  maxWidth: "450px",
-                  height: "auto", 
+                  maxWidth: "500px",
+                  height: "auto",
                   objectFit: "contain",
                   border: "5px solid rgba(139, 92, 246, 0.4)",
-                  borderRadius: "16px",
+                  borderRadius: "20px",
                   padding: "1px",
                   background: "rgba(255, 255, 255, 0.08)",
-                  boxShadow: "0 12px 40px rgba(139, 92, 246, 0.2), 0 0 20px rgba(139, 92, 246, 0.1)"
+                  boxShadow:
+                    "0 20px 50px rgba(139, 92, 246, 0.3), 0 0 30px rgba(139, 92, 246, 0.1)",
                 }}
                 priority
               />
@@ -58,7 +59,7 @@ export default function About() {
           </div>
 
           <div className={styles.content}>
-            <motion.h2 
+            <motion.h2
               className={styles.title}
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -67,8 +68,8 @@ export default function About() {
             >
               About <span className="gradient-text">Me</span>
             </motion.h2>
-            
-            <motion.div 
+
+            <motion.div
               className={styles.text}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -77,24 +78,46 @@ export default function About() {
             >
               <p>
                 I&apos;m currently pursuing my{" "}
-                <strong className="gradient-text-accent">Master of Computer Applications (MCA)</strong>{" "}
-                at Arul Anandar College, Madurai (2023-2025), maintaining an impressive academic record of <strong className="gradient-text-accent">75.9%</strong>. 
-                I hold a <strong className="gradient-text-accent">Bachelor of Commerce (Computer Applications)</strong> from Nadar Mahajan Sangam S. Vellaichamy Nadar College with <strong className="gradient-text-accent">68.5%</strong>.
+                <strong className="gradient-text-accent">
+                  Master of Computer Applications (MCA)
+                </strong>{" "}
+                at Arul Anandar College, Madurai (2023-2025), maintaining an
+                impressive academic record of{" "}
+                <strong className="gradient-text-accent">75.9%</strong>. I hold
+                a{" "}
+                <strong className="gradient-text-accent">
+                  Bachelor of Commerce (Computer Applications)
+                </strong>{" "}
+                from Nadar Mahajan Sangam S. Vellaichamy Nadar College with{" "}
+                <strong className="gradient-text-accent">68.5%</strong>.
               </p>
-              
+
               <p>
-                I completed a professional <strong className="gradient-text-accent">MERN Stack internship</strong> at XYLOINC Technologies Pvt. Ltd., Coimbatore, where I focused on building functional application modules and gaining hands-on experience in developing scalable, real-time web applications.
+                I completed a professional{" "}
+                <strong className="gradient-text-accent">
+                  MERN Stack internship
+                </strong>{" "}
+                at XYLOINC Technologies Pvt. Ltd., Coimbatore, where I focused
+                on building functional application modules and gaining hands-on
+                experience in developing scalable, real-time web applications.
               </p>
-              
+
               <p>
-                My expertise spans both the <strong className="gradient-text-accent">MERN Stack</strong> and <strong className="gradient-text-accent">Java Full Stack</strong> development. I am passionate about creating technical solutions that are architecturally sound and deliver exceptional user experiences.
+                My expertise spans both the <strong className="gradient-text-accent">MERN Stack</strong> and <strong className="gradient-text-accent">Java Full Stack</strong> development. I completed an intensive training at <strong className="gradient-text-accent">Apollo Computer Education</strong> (Jun - Nov 2025), mastering Java, Spring Boot, and building scalable full-stack applications.
+              </p>
+
+              <p>
+                I am passionate about creating technical solutions that are
+                architecturally sound and deliver exceptional user experiences,
+                with a recent focus on high-performance mobile applications like{" "}
+                <strong className="gradient-text-accent">Vibe Player</strong>.
               </p>
             </motion.div>
 
             <div className={styles.stats}>
               {stats.map((stat, index) => (
-                <motion.div 
-                  key={stat.label} 
+                <motion.div
+                  key={stat.label}
                   className={styles.stat}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -127,9 +150,9 @@ export default function About() {
               ))}
             </div>
 
-            <motion.a 
-              href="/resume.pdf" 
-              download 
+            <motion.a
+              href="/Joe-Resume.pdf?v=20260113"
+              download="Joe-Mark-M-Resume.pdf"
               className={styles.resumeBtn}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -150,7 +173,7 @@ export default function About() {
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
             </motion.a>
-            
+
             {/* GitHub Stats planned for future development */}
           </div>
         </div>
