@@ -38,6 +38,7 @@ export default function About() {
                 alt="Joe Mark M"
                 width={800}
                 height={800}
+                unoptimized
                 className={styles.profileImage}
                 style={{
                   width: "100%",
