@@ -34,7 +34,7 @@ export default function About() {
               transition={{ duration: 0.8 }}
             >
               <Image
-                src="/myimg1.png"
+                src="/myimg1.png?v=20260113"
                 alt="Joe Mark M"
                 width={800}
                 height={800}
