@@ -315,6 +315,10 @@
     display: flex;
   }
 
+  .hamburger {
+    display: flex; /* Robust fix: Force display flex on mobile */
+  }
+
   .container {
     padding: var(--space-sm) var(--space-md);
   }
@@ -325,6 +329,12 @@
 
   .rightActions {
     gap: var(--space-xs);
+  }
+
+  @media (max-width: 480px) {
+    .rightActions {
+      gap: 4px;
+    }
   }
 
   .resumeButton {

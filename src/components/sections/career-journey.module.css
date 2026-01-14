@@ -468,7 +468,7 @@
     height: 44px;
     font-size: 1.1rem;
     box-shadow: 0 0 0 6px var(--background), 0 0 0 8px var(--primary),
-      0 0 20px var(--primary), 0 4px 12px rgba(0, 0, 0, 0.3);
+      0 0 15px var(--primary), 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -483,14 +483,14 @@
   }
 
   .cardContent {
-    margin-left: 70px;
+    margin-left: 85px;
     padding: var(--space-md) var(--space-lg);
   }
 
   .markerWrapper {
     position: absolute;
     left: 0;
-    top: var(--space-lg);
+    top: 15px; /* Aligns with the phase/period text at the top */
     transform: none;
   }
 }
