@@ -181,7 +181,8 @@
   top: 100%;
   right: 0;
   margin-top: var(--space-md);
-  z-index: var(--z-popover);
+  z-index: 10000 !important; /* Extremely high z-index to stay above everything */
+  min-width: 280px; /* Ensure it doesn't wrap on small screens */
 }
 
 @media (max-width: 768px) {
@@ -214,8 +215,8 @@
 [data-theme="dark"] .hamburger span,
 [data-theme="cyberpunk"] .hamburger span,
 [data-theme="ocean"] .hamburger span {
-  background: #ffffff; /* Explicitly white for dark themes */
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  background: #ffffff !important; /* Forced bright white */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5) !important;
 }
 
 .hamburger span.open:nth-child(1) {
@@ -312,11 +313,11 @@
   }
 
   .mobile {
-    display: flex;
+    display: flex !important; /* Forced visibility */
   }
 
   .hamburger {
-    display: flex; /* Robust fix: Force display flex on mobile */
+    display: flex !important; /* Robust force display */
   }
 
   .container {

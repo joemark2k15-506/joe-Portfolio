@@ -69,10 +69,12 @@ export default function Navbar() {
 
   const handleResumeDownload = () => {
     const link = document.createElement("a");
-    link.href = "/Joe-Resume.pdf?v=20260113";
+    link.href = "/Joe-Resume.pdf?v=20260114-force-v2"; // Forced cache bust
     link.download = "Joe-Mark-M-Resume.pdf";
     link.click();
   };
+
+  // Version: 1.0.2 - Forced Re-render for Brave/Chrome Cache
 
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
