@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { useTheme } from "@/components/theme-provider";
@@ -24,6 +24,24 @@ export default function Navbar() {
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
+  
+  const themeWrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (themeWrapperRef.current && !themeWrapperRef.current.contains(event.target as Node)) {
+        setThemeMenuOpen(false);
+      }
+    }
+
+    if (themeMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [themeMenuOpen]);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -129,7 +147,7 @@ export default function Navbar() {
             <span>Resume</span>
           </motion.button>
 
-          <div className={`${styles.themeSelectorWrapper} ${themeMenuOpen ? styles.themeOpen : ""}`}>
+          <div className={`${styles.themeSelectorWrapper} ${themeMenuOpen ? styles.themeOpen : ""}`} ref={themeWrapperRef}>
             <motion.button
               onClick={() => setThemeMenuOpen(!themeMenuOpen)}
               className={styles.themeToggle}
@@ -142,7 +160,8 @@ export default function Navbar() {
                 justifyContent: 'center',
                 opacity: 1,
                 visibility: 'visible',
-                color: (theme === 'dark' || theme === 'cyberpunk' || theme === 'ocean') ? '#ffffff' : 'var(--text-primary)'
+                color: mounted && (theme === 'dark' || theme === 'cyberpunk' || theme === 'ocean') ? '#ffffff' : 'var(--text-primary)'
+
               }}
             >
               {!mounted ? (
@@ -197,14 +216,15 @@ export default function Navbar() {
                 width: '28px',
                 height: '2.5px',
                 marginBottom: i < 2 ? '5px' : '0',
-                background: (theme === 'dark' || theme === 'cyberpunk' || theme === 'ocean') 
+                background: mounted && (theme === 'dark' || theme === 'cyberpunk' || theme === 'ocean') 
                   ? '#ffffff' 
                   : '#333333',
                 opacity: 1,
                 borderRadius: '99px',
-                boxShadow: (theme !== 'light') 
+                boxShadow: mounted && (theme !== 'light') 
                   ? '0 0 15px rgba(255, 255, 255, 0.5)' 
                   : '0 0 5px rgba(0,0,0,0.1)'
+
               }}
             />
           ))}

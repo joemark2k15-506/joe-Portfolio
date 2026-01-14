@@ -47,13 +47,13 @@ export default function Hero() {
           <div className={styles.subtitleWrapper}>
             <AnimatedText 
               sequences={[
+                "Aspiring Software Engineer",
+                2000,
                 "MERN Stack Developer",
                 2000,
                 "Full-Stack Engineer",
                 2000,
-                "Mobile App Developer",
-                2000,
-                "UI/UX Enthusiast",
+                "React Specialist",
                 2000,
               ]}
               className={styles.subtitle}
@@ -66,9 +66,9 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            Passionate developer specializing in building scalable full-stack applications
-            using MongoDB, Express.js, React.js, and Node.js. I create high-performance
-            solutions that deliver exceptional user experiences.
+            Recent MCA Graduate (2025) and passionate developer building scalable
+            web applications with MongoDB, Express.js, React.js, and Node.js.
+            Ready to deliver high-performance solutions.
           </motion.p>
           
           <motion.div 

@@ -22,6 +22,7 @@ body {
   color: var(--text-primary);
   background-color: var(--background);
   overflow-x: hidden;
+  width: 100%;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -312,6 +313,16 @@ a:hover {
 @media (max-width: 768px) {
   .section {
     padding: var(--space-3xl) 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .section {
+    padding: var(--space-2xl) 0;
+  }
+  
+  .container {
+    padding: 0 var(--space-md);
   }
 }
 

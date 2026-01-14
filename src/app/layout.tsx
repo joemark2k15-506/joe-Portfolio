@@ -28,13 +28,13 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://joemark-portfolio.vercel.app'),
-  title: "Portfolio | Joe Mark M",
-  description: "MERN Stack Developer & Full-Stack Engineer specializing in building scalable full-stack applications using MongoDB, Express.js, React.js, and Node.js.",
-  keywords: ["portfolio", "MERN stack developer", "full-stack engineer", "web developer", "React Native", "Node.js", "Joe Mark M"],
+  title: "Joe Mark M | Aspiring Software Engineer & MERN Stack Developer",
+  description: "Recent MCA graduate and Full-Stack Engineer ready to build scalable web applications with MongoDB, Express.js, React.js, and Node.js.",
+  keywords: ["portfolio", "MERN stack developer", "full-stack engineer", "web developer", "fresh graduate", "software engineer", "React Native", "Node.js", "Joe Mark M"],
   authors: [{ name: "Joe Mark M" }],
   openGraph: {
-    title: "Portfolio | Joe Mark M",
-    description: "MERN Stack Developer & Full-Stack Engineer specializing in building scalable full-stack applications.",
+    title: "Joe Mark M | Aspiring Software Engineer",
+    description: "Recent MCA graduate specializing in building scalable full-stack applications.",
     type: "website",
     images: [
       {
@@ -45,12 +45,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Portfolio | Joe Mark M",
-    description: "MERN Stack Developer & Full-Stack Engineer specializing in building scalable full-stack applications.",
-    images: ["/og-image.jpg"],
-  },
 };
 
 export default function RootLayout({
@@ -60,7 +54,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} ${outfit.variable}`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} ${outfit.variable}`} suppressHydrationWarning>
         <ThemeProvider>
           <Toaster position="bottom-right" />
           <CustomCursor />

@@ -14,18 +14,27 @@ export default function DeviceMockup({
   screenshot,
   alt,
 }: DeviceMockupProps) {
+  const renderImage = () => (
+    <div className={styles.imageWrapper} style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <Image
+        src={screenshot}
+        alt={alt}
+        fill
+        className={type === "laptop" ? styles.laptopImage : styles.phoneImage}
+        unoptimized
+        style={{ 
+          objectFit: type === 'laptop' ? 'cover' : 'contain',
+          objectPosition: type === 'laptop' ? 'top' : 'center'
+        }}
+      />
+    </div>
+  );
+
   if (type === "laptop") {
     return (
       <div className={styles.laptop}>
         <div className={styles.laptopScreen}>
-          <Image
-            src={screenshot}
-            alt={alt}
-            width={800}
-            height={500}
-            className={styles.laptopImage}
-            unoptimized
-          />
+          {renderImage()}
         </div>
         <div className={styles.laptopBase}>
           <div className={styles.laptopNotch}></div>
@@ -39,14 +48,7 @@ export default function DeviceMockup({
       <div className={styles.phone}>
         <div className={styles.phoneNotch}></div>
         <div className={styles.phoneScreen}>
-          <Image
-            src={screenshot}
-            alt={alt}
-            width={300}
-            height={600}
-            className={styles.phoneImage}
-            unoptimized
-          />
+          {renderImage()}
         </div>
         <div className={styles.phoneButton}></div>
       </div>

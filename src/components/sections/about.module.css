@@ -11,61 +11,150 @@
 
 .imageSection {
   position: relative;
+  perspective: 2000px;
 }
 
 .imageWrapper {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  margin: -100px auto 0 auto;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  aspect-ratio: 1;
+  max-width: 600px;
+  margin: -80px auto 0 auto;
+  transition: transform 0.1s ease-out; /* Faster for mouse move */
   z-index: 2;
+  transform-style: preserve-3d;
+  cursor: grab;
+}
+
+.imageWrapper:active {
+  cursor: grabbing;
+}
+
+.shine {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  mix-blend-mode: overlay;
 }
 
 .imageWrapper:hover {
   transform: translateY(-10px) scale(1.02);
 }
 
-.imagePlaceholder {
+.imageContainer {
   width: 100%;
   height: 100%;
-  background: var(--gradient-primary);
-  border-radius: var(--radius-2xl);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  opacity: 0.8;
   position: relative;
   z-index: 1;
-  border: 4px solid var(--surface-elevated);
-  box-shadow: var(--shadow-xl);
+  transform-style: preserve-3d;
+  /* Remove direct styling, move to layers */
+  background: transparent;
+  box-shadow: none;
+  border: none;
 }
 
-.floatingOrb1,
-.floatingOrb2 {
+/* Layer 1: The Deep Grid Background */
+.parallaxBack {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(40px);
-  z-index: 0;
-  animation: float 6s ease-in-out infinite;
+  inset: -20px;
+  background-image: 
+    linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  border-radius: var(--radius-2xl);
+  transform: translateZ(-50px);
+  z-index: -1;
+  opacity: 0.6;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+}
+
+/* Layer 2: The Glass Frame (Now Background Card) */
+.glassFrame {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-2xl);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transform: translateZ(0px); /* Base layer */
+  z-index: 1; 
+}
+
+/* Shine Effect on the Glass Frame */
+.shine {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: var(--radius-2xl);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+
+.profileImage {
+  width: 115%; /* Slightly larger to pop out */
+  height: 115%;
+  object-fit: contain;
+  /* Image sits IN FRONT of glass */
+  transform: translateY(12%) translateZ(60px); 
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+  transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  z-index: 10; /* Front and center */
+}
+
+/* Floating Elements */
+.floatingBadge {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  color: white;
+  z-index: 20;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  transform-style: preserve-3d;
 }
 
 .floatingOrb1 {
-  width: 150px;
-  height: 150px;
-  background: hsla(262, 83%, 58%, 0.4);
-  top: -30px;
-  right: -30px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, hsla(262, 83%, 58%, 0.25), transparent 70%);
+  top: -30%;
+  right: -30%;
+  filter: blur(80px);
+  z-index: -2;
+  transform: translateZ(-200px);
+  animation: breathe 8s ease-in-out infinite;
 }
 
 .floatingOrb2 {
-  width: 120px;
-  height: 120px;
-  background: hsla(198, 93%, 60%, 0.4);
-  bottom: -20px;
-  left: -20px;
-  animation-delay: -3s;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, hsla(200, 100%, 50%, 0.2), transparent 70%);
+  bottom: -20%;
+  left: -20%;
+  filter: blur(80px);
+  z-index: -2;
+  transform: translateZ(-150px);
+  animation: breathe 10s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  0% { opacity: 0.4; transform: translateZ(-100px) scale(0.9); }
+  50% { opacity: 0.7; transform: translateZ(-100px) scale(1.1); }
+  100% { opacity: 0.4; transform: translateZ(-100px) scale(0.9); }
 }
 
 .content {
@@ -73,14 +162,16 @@
 }
 
 .title {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   margin-bottom: var(--space-xl);
+  line-height: 1.1;
 }
 
 .text {
   color: var(--text-secondary);
   line-height: 1.8;
   margin-bottom: var(--space-2xl);
+  font-size: 1.1rem;
 }
 
 .text p {
@@ -102,20 +193,22 @@
 .stat {
   text-align: center;
   padding: var(--space-lg);
-  background: var(--background);
+  background: var(--surface-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   transition: all var(--transition-base);
+  backdrop-filter: blur(10px);
 }
 
 .stat:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   border-color: var(--primary);
+  background: var(--surface-hover);
 }
 
 .statValue {
-  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   font-family: var(--font-heading);
   background: var(--gradient-primary);
@@ -126,9 +219,11 @@
 }
 
 .statLabel {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .resumeBtn {
@@ -166,7 +261,7 @@
   }
 
   .imageWrapper {
-    max-width: 320px;
+    max-width: 400px;
     margin-top: 0;
   }
 

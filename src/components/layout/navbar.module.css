@@ -355,6 +355,7 @@
     margin-left: 4px;
   }
 
+
   .mobileMenu {
     top: 60px;
     padding-bottom: var(--space-xl);
@@ -380,3 +381,20 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+/* Hide text on very small screens - Moved to root for safety */
+@media (max-width: 400px) {
+  .resumeButton span {
+    display: none !important;
+  }
+  .resumeButton {
+    padding: 8px;
+  }
+  .themeToggle {
+    margin-left: 0;
+  }
+  .logo {
+    font-size: 1.1rem;
+  }
+}
+

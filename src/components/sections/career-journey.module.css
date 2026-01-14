@@ -430,6 +430,8 @@
   
   .cardContent {
     width: clamp(260px, 40vw, 400px);
+    margin-left: auto; /* Center on tablet */
+    margin-right: auto;
   }
   
   .markerWrapper {
@@ -525,6 +527,27 @@
     width: 48px;
     height: 48px;
     font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .road {
+    width: 60px;
+  }
+
+  .marker {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    box-shadow: 0 0 0 4px var(--background), 0 0 0 6px var(--primary);
+  }
+
+  .cardContent {
+    padding: var(--space-md);
   }
 }
 

@@ -74,6 +74,7 @@ export default function ParticleBackground() {
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         style={{ background: "transparent" }}
+        dpr={[1, 2]}
       >
         <ambientLight intensity={0.5} />
         <ParticleField count={1500} />

@@ -1,5 +1,7 @@
 const GITHUB_USERNAME = "joemark2k15-506";
-const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN || "";
+// Handle placeholder token gracefully
+const rawToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN || "";
+const GITHUB_TOKEN = rawToken === "your_personal_access_token_here" ? "" : rawToken;
 
 interface GitHubRepo {
   id: number;
@@ -43,12 +45,17 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch repos");
+      // Don't throw for 403/401, just return empty to trigger fallback
+      if (response.status === 403 || response.status === 401) {
+        console.warn(`GitHub API limit hit or unauthorized (${response.status}). Using fallback data.`);
+        return [];
+      }
+      throw new Error(`Failed to fetch repos: ${response.status}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Error fetching GitHub repos:", error);
+    console.warn("Error fetching GitHub repos:", error);
     return [];
   }
 }
@@ -64,12 +71,16 @@ export async function getGitHubUser(): Promise<GitHubUser | null> {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch user");
+      if (response.status === 403 || response.status === 401) {
+        console.warn(`GitHub API limit hit or unauthorized (${response.status}). Using fallback data.`);
+        return null;
+      }
+      throw new Error(`Failed to fetch user: ${response.status}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Error fetching GitHub user:", error);
+    console.warn("Error fetching GitHub user:", error);
     return null;
   }
 }
