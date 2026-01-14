@@ -147,35 +147,37 @@ const MilestoneCard = ({
       style={{ opacity, scale, y }}
     >
       <div className={styles.cardContent}>
-        <span className={styles.phase}>{milestone.phase}</span>
-        <span className={styles.period}>{milestone.period}</span>
-        <h3 className={styles.title}>{milestone.title}</h3>
-        <h4 className={styles.organization}>{milestone.organization}</h4>
-        <p className={styles.description}>{milestone.description}</p>
-        
-        {milestone.technologies.length > 0 && (
-          <div className={styles.techStack}>
-            {milestone.technologies.map((tech) => (
-              <div key={tech} className={styles.techIcon} title={tech}>
-                {techIcons[tech] || <FaCode />}
-              </div>
-            ))}
+        <div className={styles.markerWrapper}>
+          <div className={styles.marker}>
+            {milestone.type === "education" && <FaGraduationCap />}
+            {milestone.type === "work" && <FaBriefcase />}
+            {milestone.type === "project" && <FaRocket />}
+            {milestone.type === "skill" && <FaCode />}
           </div>
-        )}
+        </div>
+        
+        <div className={styles.contentBody}>
+          <span className={styles.phase}>{milestone.phase}</span>
+          <span className={styles.period}>{milestone.period}</span>
+          <h3 className={styles.title}>{milestone.title}</h3>
+          <h4 className={styles.organization}>{milestone.organization}</h4>
+          <p className={styles.description}>{milestone.description}</p>
+          
+          {milestone.technologies.length > 0 && (
+            <div className={styles.techStack}>
+              {milestone.technologies.map((tech) => (
+                <div key={tech} className={styles.techIcon} title={tech}>
+                  {techIcons[tech] || <FaCode />}
+                </div>
+              ))}
+            </div>
+          )}
 
-        {milestone.link && (
-          <a href={milestone.link} className={styles.cta} target="_blank" rel="noopener noreferrer">
-            {milestone.ctaText || "View Details"} →
-          </a>
-        )}
-      </div>
-
-      <div className={styles.markerWrapper}>
-        <div className={styles.marker}>
-          {milestone.type === "education" && <FaGraduationCap />}
-          {milestone.type === "work" && <FaBriefcase />}
-          {milestone.type === "project" && <FaRocket />}
-          {milestone.type === "skill" && <FaCode />}
+          {milestone.link && (
+            <a href={milestone.link} className={styles.cta} target="_blank" rel="noopener noreferrer">
+              {milestone.ctaText || "View Details"} →
+            </a>
+          )}
         </div>
       </div>
     </motion.div>

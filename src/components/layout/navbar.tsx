@@ -177,9 +177,20 @@ export default function Navbar() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          <span className={mobileMenuOpen ? styles.open : ""}></span>
-          <span className={mobileMenuOpen ? styles.open : ""}></span>
-          <span className={mobileMenuOpen ? styles.open : ""}></span>
+          {[0, 1, 2].map((i) => (
+            <span 
+              key={i}
+              className={mobileMenuOpen ? styles.open : ""}
+              style={{ 
+                background: (theme === 'dark' || theme === 'cyberpunk' || theme === 'ocean') 
+                  ? '#ffffff' 
+                  : 'var(--text-primary)',
+                boxShadow: (theme !== 'light') 
+                  ? '0 0 15px rgba(255, 255, 255, 0.5)' 
+                  : 'none'
+              }}
+            />
+          ))}
         </button>
 
         {/* Mobile Navigation */}
@@ -192,6 +203,9 @@ export default function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
+              <div style={{ padding: '8px 24px', fontSize: '10px', opacity: 0.5, textAlign: 'right' }}>
+                Build: 2026.01.14.07.20
+              </div>
               <ul className={styles.mobileNavLinks}>
                 {navLinks.map((link) => (
                   <li key={link.href}>

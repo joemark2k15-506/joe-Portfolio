@@ -159,16 +159,19 @@
 /* Card Content */
 .cardContent {
   position: relative;
-  max-width: 450px;
-  padding: var(--space-xl);
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+  overflow: visible;
+}
+
+.contentBody {
+  flex: 1;
+}
+
+.cardContent {
   /* GPU acceleration */
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -419,6 +422,12 @@
   .milestoneCard.right .cardContent {
     margin-right: 120px;
   }
+  
+  .markerWrapper {
+    flex-shrink: 0;
+    position: static;
+    transform: none;
+  }
 
   .road {
     width: 150px;
@@ -483,15 +492,19 @@
   }
 
   .cardContent {
-    margin-left: 100px; /* Extreme margin to zero out overlap */
-    padding: var(--space-md) var(--space-lg);
+    margin-left: 0;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-xl);
   }
 
   .markerWrapper {
-    position: absolute;
-    left: 0;
-    top: 15px; /* Aligns with the phase/period text at the top */
-    transform: none;
+    margin-bottom: var(--space-xs);
+  }
+
+  .marker {
+    width: 50px;
+    height: 50px;
   }
 }
 
