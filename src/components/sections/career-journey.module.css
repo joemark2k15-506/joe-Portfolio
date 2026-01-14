@@ -145,21 +145,21 @@
   backface-visibility: hidden;
 }
 
-/* Alternating Layout */
+/* Alternating Layout - Fluid spacing */
 .milestoneCard.left {
   justify-content: flex-start;
-  padding-left: calc(50% + 120px);
+  padding-left: 55%; /* Fluid relative offset */
 }
 
 .milestoneCard.right {
   justify-content: flex-end;
-  padding-right: calc(50% + 120px);
+  padding-right: 55%; /* Fluid relative offset */
 }
 
 /* Card Content */
 .cardContent {
   position: relative;
-  max-width: 450px;
+  width: clamp(280px, 38vw, 450px); /* Fluid width - shrinks on narrow screens */
   padding: var(--space-xl);
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
@@ -419,12 +419,17 @@
     justify-content: center;
   }
 
+  /* Force safe distance from center even if browser simulates desktop */
   .milestoneCard.left .cardContent {
-    margin-left: 120px;
+    margin-left: max(100px, 15vw);
   }
 
   .milestoneCard.right .cardContent {
-    margin-right: 120px;
+    margin-right: max(100px, 15vw);
+  }
+  
+  .cardContent {
+    width: clamp(260px, 40vw, 400px);
   }
   
   .markerWrapper {
@@ -436,7 +441,7 @@
   }
 
   .road {
-    width: 150px;
+    width: 120px;
   }
 }
 
