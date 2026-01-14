@@ -136,11 +136,17 @@ export default function Navbar() {
               aria-label="Toggle theme"
               whileHover={{ scale: 1.1, rotate: 15 }}
               whileTap={{ scale: 0.9 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: 1,
+                visibility: 'visible',
+                color: (theme === 'dark' || theme === 'cyberpunk' || theme === 'ocean') ? '#ffffff' : 'var(--text-primary)'
+              }}
             >
               {!mounted ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                </svg>
+                <span style={{ fontSize: '18px' }}>🌓</span>
               ) : theme === "light" ? (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
@@ -176,18 +182,30 @@ export default function Navbar() {
           className={`${styles.hamburger} ${styles.mobile}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
+          style={{ 
+            display: 'flex', 
+            opacity: 1, 
+            visibility: 'visible',
+            padding: '8px'
+          }}
         >
           {[0, 1, 2].map((i) => (
             <span 
               key={i}
               className={mobileMenuOpen ? styles.open : ""}
               style={{ 
+                display: 'block',
+                width: '28px',
+                height: '2.5px',
+                marginBottom: i < 2 ? '5px' : '0',
                 background: (theme === 'dark' || theme === 'cyberpunk' || theme === 'ocean') 
                   ? '#ffffff' 
-                  : 'var(--text-primary)',
+                  : '#333333',
+                opacity: 1,
+                borderRadius: '99px',
                 boxShadow: (theme !== 'light') 
                   ? '0 0 15px rgba(255, 255, 255, 0.5)' 
-                  : 'none'
+                  : '0 0 5px rgba(0,0,0,0.1)'
               }}
             />
           ))}
@@ -203,8 +221,8 @@ export default function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <div style={{ padding: '8px 24px', fontSize: '10px', opacity: 0.5, textAlign: 'right' }}>
-                Build: 2026.01.14.07.25
+              <div style={{ padding: '8px 24px', fontSize: '10px', opacity: 0.8, textAlign: 'right', fontWeight: 'bold', color: '#fff' }}>
+                Build: 2026.01.14.07.35
               </div>
               <ul className={styles.mobileNavLinks}>
                 {navLinks.map((link) => (
