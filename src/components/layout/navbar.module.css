@@ -349,7 +349,10 @@
   }
 
   .themeToggle {
-    display: none; /* Hide toggle on mobile header, move selector to menu */
+    display: flex; /* Restore visibility on mobile */
+    width: 38px;
+    height: 38px;
+    margin-left: 4px;
   }
 
   .mobileMenu {

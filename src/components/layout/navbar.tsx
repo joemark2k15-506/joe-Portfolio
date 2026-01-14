@@ -204,7 +204,7 @@ export default function Navbar() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
               <div style={{ padding: '8px 24px', fontSize: '10px', opacity: 0.5, textAlign: 'right' }}>
-                Build: 2026.01.14.07.20
+                Build: 2026.01.14.07.25
               </div>
               <ul className={styles.mobileNavLinks}>
                 {navLinks.map((link) => (

@@ -147,15 +147,6 @@ const MilestoneCard = ({
       style={{ opacity, scale, y }}
     >
       <div className={styles.cardContent}>
-        <div className={styles.markerWrapper}>
-          <div className={styles.marker}>
-            {milestone.type === "education" && <FaGraduationCap />}
-            {milestone.type === "work" && <FaBriefcase />}
-            {milestone.type === "project" && <FaRocket />}
-            {milestone.type === "skill" && <FaCode />}
-          </div>
-        </div>
-        
         <div className={styles.contentBody}>
           <span className={styles.phase}>{milestone.phase}</span>
           <span className={styles.period}>{milestone.period}</span>
@@ -178,6 +169,15 @@ const MilestoneCard = ({
               {milestone.ctaText || "View Details"} →
             </a>
           )}
+        </div>
+      </div>
+
+      <div className={styles.markerWrapper}>
+        <div className={styles.marker}>
+          {milestone.type === "education" && <FaGraduationCap />}
+          {milestone.type === "work" && <FaBriefcase />}
+          {milestone.type === "project" && <FaRocket />}
+          {milestone.type === "skill" && <FaCode />}
         </div>
       </div>
     </motion.div>
