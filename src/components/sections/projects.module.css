@@ -134,7 +134,7 @@
   background: var(--gradient-primary);
   padding: var(--space-xl);
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .frontContent {

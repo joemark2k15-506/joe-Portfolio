@@ -1,5 +1,6 @@
 .about {
   background: var(--surface);
+  overflow: hidden;
 }
 
 .grid {
