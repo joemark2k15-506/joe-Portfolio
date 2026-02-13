@@ -4,7 +4,8 @@
 
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
+  /* Mobile browser address bar fix */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,7 +13,7 @@
   background: var(--background);
   contain: paint layout;
   content-visibility: auto;
-  contain-intrinsic-size: 100vh;
+  contain-intrinsic-size: 100dvh;
 }
 
 /* Aurora mesh background */
@@ -64,17 +65,19 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: var(--space-3xl);
-  padding: var(--space-5xl) var(--space-2xl) var(--space-2xl);
+  gap: clamp(2rem, 5vw, var(--space-3xl));
+  padding: clamp(6rem, 10vh, var(--space-5xl)) var(--space-lg) var(--space-2xl);
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* Left side — text content */
 .textContainer {
   text-align: left;
+  /* Prevent horizontal overflow if words are too long */
+  min-width: 0;
 }
 
 /* Greeting label */
@@ -245,8 +248,10 @@
 
 .profileWrapper {
   position: relative;
-  width: 380px;
-  height: 380px;
+  width: clamp(280px, 35vw, 380px);
+  /* Responsive width */
+  height: clamp(280px, 35vw, 380px);
+  /* Responsive height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -255,8 +260,10 @@
 /* Blob border around profile image */
 .blobContainer {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 80%;
+  /* Relative to wrapper */
+  height: 80%;
+  /* Relative to wrapper */
   border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
   overflow: hidden;
   animation: blobMorph 8s ease-in-out infinite;
@@ -381,8 +388,10 @@
 /* Glow behind the profile */
 .profileGlow {
   position: absolute;
-  width: 300px;
-  height: 300px;
+  width: 100%;
+  /* Match wrapper */
+  height: 100%;
+  /* Match wrapper */
   border-radius: 50%;
   background: radial-gradient(circle,
       var(--glow-primary) 0%,
@@ -463,8 +472,10 @@
   .content {
     grid-template-columns: 1fr;
     text-align: center;
-    padding: var(--space-5xl) var(--space-lg) var(--space-xl);
+    padding: clamp(6rem, 15vh, var(--space-5xl)) var(--space-lg) var(--space-xl);
     gap: var(--space-2xl);
+    justify-items: center;
+    /* Center grid items */
   }
 
   .textContainer {
@@ -495,25 +506,39 @@
 
   .profileSection {
     order: 1;
+    width: 100%;
+    margin-bottom: var(--space-lg);
   }
 
   .profileWrapper {
     width: 320px;
     height: 320px;
   }
-
-  .blobContainer {
-    width: 250px;
-    height: 250px;
-  }
-
-  .profileGlow {
-    width: 250px;
-    height: 250px;
-  }
 }
 
 @media (max-width: 768px) {
+  /* We want to show the profile section on mobile now if it fits, or hide if desired.
+     Previous code hid it. Let's keep it visible but smaller? 
+     The user requested "Perfect fit on mobile". Hiding it is a valid choice if it's too big, 
+     but making it smaller is better "responsive" design. 
+     However, to be "safe" and follows "don't change design" (which might imply content), 
+     I will respect the original decision to hide it OR make it responsive.
+     Actually, "Perfect fit" usually implies showing content. 
+     Let's try to make it responsive instead of `display: none`.
+     BUT, if the user liked the "No Profile on Mobile" design, I should stick to it?
+     
+     WAIT, checking original code:
+     @media (max-width: 768px) { .profileSection { display: none; } }
+     
+     If I change this to display it, I am "changing the design structure".
+     So I MUST RESPECT `display: none` if that was a design choice.
+     
+     User said: "Refactor... to be fully responsive... Perfect fit... No zoom-out needed on mobile"
+     The request "dont change designs and structur" heavily implies keeping content visibility as is.
+     
+     I will keep `display: none` for now, but ensure no overflow from other elements.
+  */
+
   .profileSection {
     display: none;
   }
@@ -534,6 +559,7 @@
   .buttons {
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 
   .primaryBtn,
@@ -544,19 +570,10 @@
     font-size: 0.9rem;
   }
 
+  /* Just in case profileSection is forced visible later, we resize these */
   .profileWrapper {
     width: 260px;
     height: 260px;
-  }
-
-  .blobContainer {
-    width: 200px;
-    height: 200px;
-  }
-
-  .profileGlow {
-    width: 200px;
-    height: 200px;
   }
 
   .orbitIcon {

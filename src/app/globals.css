@@ -211,10 +211,11 @@
     /* Offset for fixed navbar */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* Prevent horizontal scroll globally */
   }
 
   body {
-    min-height: 100vh;
+    min-height: 100dvh; /* Fix for mobile browser address bars */
     font-size: 1rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -308,8 +309,8 @@
   .section {
     width: 100%;
     position: relative;
-    overflow-x: clip;
-    padding: var(--space-5xl) 0;
+    overflow: hidden; /* Changed from clip to hidden for better support */
+    padding: clamp(3rem, 8vw, var(--space-5xl)) 0; /* Responsive padding */
   }
 
   .container-custom {

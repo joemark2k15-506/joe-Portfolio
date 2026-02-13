@@ -237,8 +237,6 @@ export default function ProjectModal({ selectedProject, isOpen, onClose }: Proje
                                             >
                                                 {/* CONDITIONAL IMAGE LAYOUT */}
                                                 {isDesktop ? (
-                                                    // DESKTOP: Full Width, Auto Height (Scrollable)
-                                                    // DESKTOP: Full Width, Auto Height (Scrollable)
                                                     displayImages[currentImageIndex] ? (
                                                         <Image
                                                             src={displayImages[currentImageIndex]}
@@ -249,14 +247,15 @@ export default function ProjectModal({ selectedProject, isOpen, onClose }: Proje
                                                             style={{
                                                                 width: "100%",
                                                                 height: "auto",
-                                                                display: "block"
+                                                                display: "block",
+                                                                maxHeight: "60vh",
+                                                                objectFit: "contain"
                                                             }}
                                                             priority
                                                             unoptimized
                                                         />
                                                     ) : null
                                                 ) : (
-                                                    // MOBILE: Infinity Glass Adaptive
                                                     displayImages[currentImageIndex] ? (
                                                         <Image
                                                             src={displayImages[currentImageIndex]}
@@ -267,8 +266,8 @@ export default function ProjectModal({ selectedProject, isOpen, onClose }: Proje
                                                             style={{
                                                                 width: "auto",
                                                                 height: "auto",
-                                                                maxHeight: "80vh",
-                                                                maxWidth: "90vw",
+                                                                maxHeight: "60dvh",
+                                                                maxWidth: "85vw",
                                                                 objectFit: "contain",
                                                                 display: "block",
                                                             }}

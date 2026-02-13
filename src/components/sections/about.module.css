@@ -261,6 +261,9 @@
 /* ========================
    Responsive
    ======================== */
+/* ===========================
+   Responsive
+   ======================== */
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr;
@@ -279,6 +282,8 @@
 
   .resumeBtn {
     margin: 0 auto;
+    display: inline-flex;
+    /* Fix for centering */
   }
 
   .stats {
@@ -293,6 +298,10 @@
 @media (max-width: 768px) {
   .stats {
     gap: var(--space-sm);
+    justify-content: flex-start;
+    /* Allow scroll on mobile */
+    padding-left: var(--space-md);
+    /* Peek visual cue */
   }
 
   .stat {
@@ -304,10 +313,14 @@
 @media (max-width: 640px) {
   .imageWrapper {
     max-width: 260px;
+    width: 100%;
   }
 
   .specialtyCards {
-    max-width: 260px;
+    max-width: 360px;
+    /* Allow wider on landscape */
+    width: 100%;
+    margin: 0 auto;
   }
 
   .specialtyCard {
