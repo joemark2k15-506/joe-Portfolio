@@ -27,32 +27,30 @@ export default function Contact() {
       return;
     }
 
+    if (!formRef.current) return;
+
     setStatus("loading");
 
     try {
-      await emailjs.send(
+      // Initialize with public key
+      emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+
+      await emailjs.sendForm(
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          reply_to: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        },
+        formRef.current,
         EMAILJS_CONFIG.PUBLIC_KEY
       );
 
       setStatus("success");
       toast.success("Message sent successfully!");
       setFormData({ name: "", email: "", subject: "", message: "" });
-
       if (formRef.current) formRef.current.reset();
-
       setTimeout(() => setStatus("idle"), 5000);
-    } catch (error) {
-      console.error("Failed to send email:", error);
+    } catch (error: any) {
+      console.error("EmailJS Error:", error);
       setStatus("error");
-      toast.error("Failed to send message. Please try again later.");
+      toast.error(error?.text || "Failed to send message. Please try again later.");
       setTimeout(() => setStatus("idle"), 5000);
     }
   };
@@ -151,10 +149,10 @@ export default function Contact() {
                   <input
                     type="text"
                     id="name"
-                    name="name"
+                    name="from_name"
                     className={styles.input}
                     value={formData.name}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                     disabled={status === "loading"}
                     placeholder='"Your Name"'
@@ -171,10 +169,10 @@ export default function Contact() {
                   <input
                     type="email"
                     id="email"
-                    name="email"
+                    name="reply_to"
                     className={styles.input}
                     value={formData.email}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
                     disabled={status === "loading"}
                     placeholder='"email@example.com"'
@@ -194,7 +192,7 @@ export default function Contact() {
                     name="subject"
                     className={styles.input}
                     value={formData.subject}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     required
                     disabled={status === "loading"}
                     placeholder='"Project Inquiry"'
@@ -213,7 +211,7 @@ export default function Contact() {
                     name="message"
                     className={styles.textarea}
                     value={formData.message}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     required
                     disabled={status === "loading"}
                     rows={5}
