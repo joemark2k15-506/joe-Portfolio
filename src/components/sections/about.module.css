@@ -298,19 +298,27 @@
 @media (max-width: 768px) {
   .stats {
     gap: var(--space-sm);
-    justify-content: flex-start;
-    /* Allow scroll on mobile */
-    padding-left: var(--space-md);
-    /* Peek visual cue */
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .stat {
-    min-width: 120px;
+    min-width: 100px;
+    flex: 1 1 140px;
+    /* Allow growing and shrinking, base 140px */
     padding: var(--space-md);
   }
 }
 
 @media (max-width: 640px) {
+  .content {
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+
   .imageWrapper {
     max-width: 260px;
     width: 100%;

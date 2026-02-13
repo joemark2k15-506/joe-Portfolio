@@ -251,12 +251,15 @@
 
 @media (max-width: 480px) {
   .grid {
-    gap: var(--space-lg);
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    padding-left: 0;
+    justify-items: center;
   }
 
   .hexagonWrapper {
-    width: 100%;
-    margin-bottom: var(--space-md);
+    width: auto;
+    margin-bottom: 0;
   }
 }
