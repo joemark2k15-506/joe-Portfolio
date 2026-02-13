@@ -1,182 +1,166 @@
+/* ===========================
+   MAGAZINE-STYLE ABOUT SECTION
+   =========================== */
+
 .about {
-  background: var(--surface);
+  background: var(--background);
   overflow: hidden;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 0.8fr 1.2fr;
   gap: var(--space-4xl);
-  align-items: center;
+  align-items: start;
 }
 
+/* Left side — Profile Image */
 .imageSection {
   position: relative;
-  perspective: 2000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
 }
 
 .imageWrapper {
   position: relative;
   width: 100%;
+  max-width: 360px;
   aspect-ratio: 1;
-  max-width: 600px;
-  margin: -80px auto 0 auto;
-  transition: transform 0.1s ease-out; /* Faster for mouse move */
-  z-index: 2;
-  transform-style: preserve-3d;
-  cursor: grab;
+  margin: 0 auto;
+  cursor: default;
 }
 
-.imageWrapper:active {
-  cursor: grabbing;
-}
-
-.shine {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-.imageWrapper:hover {
-  transform: translateY(-10px) scale(1.02);
-}
-
-.imageContainer {
+/* Blob border */
+.blobFrame {
   width: 100%;
   height: 100%;
+  border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%;
+  overflow: hidden;
+  animation: blobMorph 10s ease-in-out infinite;
+  box-shadow:
+    0 0 40px var(--glow-primary),
+    0 20px 60px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(0, 200, 220, 0.25);
   position: relative;
-  z-index: 1;
-  transform-style: preserve-3d;
-  /* Remove direct styling, move to layers */
-  background: transparent;
-  box-shadow: none;
-  border: none;
 }
 
-/* Layer 1: The Deep Grid Background */
-.parallaxBack {
-  position: absolute;
-  inset: -20px;
-  background-image: 
-    linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
-  background-size: 40px 40px;
-  border-radius: var(--radius-2xl);
-  transform: translateZ(-50px);
-  z-index: -1;
-  opacity: 0.6;
-  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-}
+@keyframes blobMorph {
 
-/* Layer 2: The Glass Frame (Now Background Card) */
-.glassFrame {
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-2xl);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  transform: translateZ(0px); /* Base layer */
-  z-index: 1; 
-}
+  0%,
+  100% {
+    border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%;
+  }
 
-/* Shine Effect on the Glass Frame */
-.shine {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: var(--radius-2xl);
-  pointer-events: none;
-  mix-blend-mode: overlay;
-  opacity: 0.5;
+  25% {
+    border-radius: 55% 45% 40% 60% / 40% 60% 55% 45%;
+  }
+
+  50% {
+    border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+  }
+
+  75% {
+    border-radius: 45% 55% 60% 40% / 60% 40% 55% 45%;
+  }
 }
 
 .profileImage {
-  width: 115%; /* Slightly larger to pop out */
-  height: 115%;
-  object-fit: contain;
-  /* Image sits IN FRONT of glass */
-  transform: translateY(12%) translateZ(60px); 
-  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
-  transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  z-index: 10; /* Front and center */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.05) saturate(1.1);
 }
 
-/* Floating Elements */
-.floatingBadge {
+/* Floating orb glow */
+.imageGlow {
   position: absolute;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.6rem 1.2rem;
-  border-radius: 12px;
-  color: white;
-  z-index: 20;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+      var(--glow-primary) 0%,
+      transparent 70%);
+  filter: blur(50px);
+  z-index: -1;
+  animation: glowPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* "What I Do" specialty cards below image */
+.specialtyCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 360px;
+}
+
+.specialtyCard {
+  text-align: center;
+  padding: var(--space-md) var(--space-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.specialtyCard:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px var(--glow-primary);
+}
+
+.specialtyIcon {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 6px;
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  font-size: 0.9rem;
-  transform-style: preserve-3d;
+  justify-content: center;
 }
 
-.floatingOrb1 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, hsla(262, 83%, 58%, 0.25), transparent 70%);
-  top: -30%;
-  right: -30%;
-  filter: blur(80px);
-  z-index: -2;
-  transform: translateZ(-200px);
-  animation: breathe 8s ease-in-out infinite;
+.specialtyLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.floatingOrb2 {
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, hsla(200, 100%, 50%, 0.2), transparent 70%);
-  bottom: -20%;
-  left: -20%;
-  filter: blur(80px);
-  z-index: -2;
-  transform: translateZ(-150px);
-  animation: breathe 10s ease-in-out infinite alternate;
-}
-
-@keyframes breathe {
-  0% { opacity: 0.4; transform: translateZ(-100px) scale(0.9); }
-  50% { opacity: 0.7; transform: translateZ(-100px) scale(1.1); }
-  100% { opacity: 0.4; transform: translateZ(-100px) scale(0.9); }
-}
-
+/* Right side — Content */
 .content {
-  max-width: 600px;
+  max-width: 650px;
 }
 
 .title {
   font-size: clamp(2.5rem, 5vw, 4rem);
   margin-bottom: var(--space-xl);
   line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .text {
   color: var(--text-secondary);
   line-height: 1.8;
   margin-bottom: var(--space-2xl);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .text p {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
 }
 
 .text strong {
@@ -184,67 +168,86 @@
   font-weight: 600;
 }
 
+/* Horizontal scrollable stats */
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-xl);
+  display: flex;
+  gap: var(--space-md);
   margin-bottom: var(--space-2xl);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: var(--space-xs);
+}
+
+.stats::-webkit-scrollbar {
+  display: none;
 }
 
 .stat {
+  flex: 0 0 auto;
+  min-width: 140px;
   text-align: center;
-  padding: var(--space-lg);
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-base);
-  backdrop-filter: blur(10px);
+  padding: var(--space-lg) var(--space-md);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-fast);
 }
 
 .stat:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
   border-color: var(--primary);
-  background: var(--surface-hover);
+  box-shadow: 0 8px 30px var(--glow-primary);
+}
+
+.statIcon {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: var(--space-xs);
 }
 
 .statValue {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 4vw, 2.8rem);
   font-weight: 800;
   font-family: var(--font-heading);
   background: var(--gradient-primary);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: var(--space-xs);
+  margin-bottom: 2px;
+  line-height: 1.2;
 }
 
 .statLabel {
-  font-size: 1rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.08em;
 }
 
+/* Resume button */
 .resumeBtn {
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-md) var(--space-2xl);
-  background: var(--gradient-accent);
+  padding: 14px 32px;
+  background: var(--gradient-primary);
   color: white;
-  border-radius: var(--radius-full);
+  border-radius: 999px;
   font-weight: 600;
   font-family: var(--font-accent);
-  font-size: 1.125rem;
-  transition: all var(--transition-base);
-  box-shadow: 0 4px 20px hsla(326, 77%, 58%, 0.4);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 20px var(--glow-primary);
+  text-decoration: none;
+  will-change: transform;
 }
 
 .resumeBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px hsla(326, 77%, 58%, 0.6);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--glow-primary);
+  color: white;
 }
 
 .resumeBtn svg {
@@ -255,30 +258,63 @@
   transform: translateY(2px);
 }
 
+/* ========================
+   Responsive
+   ======================== */
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr;
     gap: var(--space-3xl);
   }
 
-  .imageWrapper {
-    max-width: 400px;
-    margin-top: 0;
+  .imageSection {
+    order: 1;
   }
 
   .content {
     text-align: center;
     margin: 0 auto;
+    order: 2;
   }
 
   .resumeBtn {
     margin: 0 auto;
   }
+
+  .stats {
+    justify-content: center;
+  }
+
+  .specialtyCards {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats {
+    gap: var(--space-sm);
+  }
+
+  .stat {
+    min-width: 120px;
+    padding: var(--space-md);
+  }
 }
 
 @media (max-width: 640px) {
-  .stats {
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
+  .imageWrapper {
+    max-width: 260px;
+  }
+
+  .specialtyCards {
+    max-width: 260px;
+  }
+
+  .specialtyCard {
+    padding: var(--space-sm);
+  }
+
+  .specialtyLabel {
+    font-size: 0.6rem;
   }
 }

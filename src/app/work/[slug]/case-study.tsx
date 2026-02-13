@@ -31,7 +31,7 @@ export default function CaseStudy({ slug }: { slug: string }) {
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <motion.div 
+          <motion.div
             className={styles.heroText}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -40,11 +40,11 @@ export default function CaseStudy({ slug }: { slug: string }) {
             <span className={styles.category}>{project.tags.join(" • ")}</span>
             <h1 className={styles.title}>{project.title}</h1>
             <p className={styles.subtitle}>{project.subtitle}</p>
-            
+
             <div className={styles.actions}>
-              <a 
-                href={project.githubUrl} 
-                target="_blank" 
+              <a
+                href={project.githubUrl}
+                target="_blank"
                 rel="noopener noreferrer"
                 className={styles.primaryBtn}
               >
@@ -54,7 +54,7 @@ export default function CaseStudy({ slug }: { slug: string }) {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className={styles.heroImageWrapper}
             style={{ y: heroY, opacity: heroOpacity }}
             initial={{ opacity: 0, scale: 0.9 }}
@@ -62,7 +62,7 @@ export default function CaseStudy({ slug }: { slug: string }) {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className={styles.heroImageContainer}>
-               {/* Use the first screenshot or main image as hero */}
+              {/* Use the first screenshot or main image as hero */}
               <Image
                 src={project.image}
                 alt={project.title}
@@ -78,10 +78,10 @@ export default function CaseStudy({ slug }: { slug: string }) {
 
       {/* Case Study Content */}
       <div className={styles.contentContainer}>
-        
+
         {/* Challenge & Solution Grid */}
         <div className={styles.grid}>
-          <motion.section 
+          <motion.section
             className={styles.section}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -94,7 +94,7 @@ export default function CaseStudy({ slug }: { slug: string }) {
             <p>{project.challenge}</p>
           </motion.section>
 
-          <motion.section 
+          <motion.section
             className={styles.section}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -110,7 +110,7 @@ export default function CaseStudy({ slug }: { slug: string }) {
         </div>
 
         {/* Tech Stack */}
-        <motion.section 
+        <motion.section
           className={styles.techSection}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -127,7 +127,7 @@ export default function CaseStudy({ slug }: { slug: string }) {
         </motion.section>
 
         {/* Key Features */}
-        <motion.section 
+        <motion.section
           className={styles.featuresSection}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -147,11 +147,11 @@ export default function CaseStudy({ slug }: { slug: string }) {
         {/* Gallery / Screenshots */}
         <section className={styles.gallery}>
           <h3>Project Gallery</h3>
-          <div className={styles.galleryGrid}>
+          <div className={project.type === 'mobile' ? styles.mobileGalleryGrid : styles.galleryGrid}>
             {project.screenshots.map((shot, index) => (
-              <motion.div 
-                key={index} 
-                className={styles.galleryItem}
+              <motion.div
+                key={index}
+                className={project.type === 'mobile' ? styles.mobileGalleryItem : styles.galleryItem}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -162,7 +162,7 @@ export default function CaseStudy({ slug }: { slug: string }) {
                   alt={`${project.title} screenshot ${index + 1}`}
                   width={600}
                   height={400}
-                  className={styles.screenshot}
+                  className={project.type === 'mobile' ? styles.mobileScreenshot : styles.screenshot}
                 />
               </motion.div>
             ))}

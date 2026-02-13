@@ -12,6 +12,7 @@ export interface Project {
   technologies: string[];
   link: string;
   githubUrl: string;
+  type: "web" | "mobile";
   // Case Study Content
   challenge: string;
   solution: string;
@@ -50,6 +51,7 @@ export const projects: Project[] = [
       "Real-time Inventory Management Integration",
       "Shopping Cart and Checkout Process Flow",
     ],
+    type: "web",
   },
   {
     id: 2,
@@ -75,5 +77,6 @@ export const projects: Project[] = [
       "Offline Playback and Local File Management",
       "Custom Audio Visualization Engine",
     ],
+    type: "mobile",
   },
 ];

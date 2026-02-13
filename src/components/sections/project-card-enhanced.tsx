@@ -1,154 +1,180 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import DeviceMockup from "@/components/ui/device-mockup";
-import PhoneStack from "@/components/ui/phone-stack";
-import LaptopStack from "@/components/ui/laptop-stack";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { FaGithub } from "react-icons/fa";
 import { Project } from "@/lib/data";
 import styles from "./projects.module.css";
 
-interface ProjectCardEnhancedProps {
+interface ProjectCardProps {
   project: Project;
+  onClick: () => void;
 }
 
-export default function ProjectCardEnhanced({ project }: ProjectCardEnhancedProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
+export default function ProjectCardEnhanced({ project, onClick }: ProjectCardProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Slideshow removed in favor of LaptopStack
-  
-  const displayedScreenshot = project.image;
+  // Mouse Motion Values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Smooth Springs for Tilt (Damped for premium feel)
+  const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
+
+  // 1. Card Rotation (Tilt)
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  // 2. Parallax Layers (Z-Axis movement)
+  // Image pops out
+  const imgZ = useTransform(isHovered ? mouseX : x, [-0.5, 0.5], ["30px", "30px"]);
+  // Content pops out even more
+  const contentZ = useTransform(isHovered ? mouseX : x, [-0.5, 0.5], ["60px", "60px"]);
+
+  // Slideshow Logic
+  const allImages = [project.image, ...(project.screenshots || [])];
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isHovered && allImages.length > 1) {
+      interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+      }, 1500);
+    } else {
+      setCurrentImageIndex(0);
+    }
+    return () => clearInterval(interval);
+  }, [isHovered, allImages.length]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isFlipped) return;
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const angleX = (y - centerY) / 10;
-    const angleY = (centerX - x) / 10;
-    setRotateX(angleX);
-    setRotateY(angleY);
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    const xPct = (e.clientX - rect.left) / width - 0.5;
+    const yPct = (e.clientY - rect.top) / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
   };
 
   const handleMouseLeave = () => {
-    setIsFlipped(false);
-    setRotateX(0);
-    setRotateY(0);
+    setIsHovered(false);
+    x.set(0);
+    y.set(0);
   };
 
   return (
-    <div 
-      className={styles.cardWrapper}
+    <motion.div
+      ref={ref}
+      className={`${styles.card3DContainer} cursor-pointer`}
+      onClick={onClick}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsFlipped(true)}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
+      style={{
+        perspective: 1200,
+      }}
     >
       <motion.div
-        className={styles.cardInner}
-        initial={false}
-        animate={{ 
-          rotateY: isFlipped ? 180 : rotateY,
-          rotateX: isFlipped ? 0 : rotateX,
-          z: isFlipped ? 50 : 0
+        className={styles.cardBody}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
         }}
-        transition={{ 
-          rotateY: { type: "spring", stiffness: isFlipped ? 100 : 300, damping: 20 },
-          rotateX: { type: "spring", stiffness: 300, damping: 20 },
-          z: { duration: 0.3 }
-        }}
-        style={{ transformStyle: "preserve-3d", position: "relative" }}
       >
-        {/* Front Face */}
-        <div className={styles.cardFront}>
-          <div className={styles.mockupContainer}>
-            {project.screenshots && project.screenshots.length > 1 ? (
-              project.tags.includes("Mobile") ? (
-                <PhoneStack 
-                  screenshots={project.screenshots} 
-                  alt={project.title} 
+        {/* Layer 0: Background Plane */}
+        <div className={styles.cardBg} />
+
+        {/* Layer 1: Image Mockup (Floating) */}
+        <motion.div
+          className={styles.imageContainer3D}
+          style={{
+            transform: "translateZ(30px)",
+            transformStyle: "preserve-3d",
+            z: imgZ // Parallax lift
+          }}
+        >
+          <div className={styles.imagePerspective}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentImageIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                style={{ width: "100%", height: "100%", position: "absolute" }}
+                layoutId={`project-image-${project.id}`}
+              >
+                <Image
+                  src={allImages[currentImageIndex]}
+                  alt={project.title}
+                  fill
+                  className={styles.projectImage}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
-              ) : (
-                <LaptopStack 
-                  screenshots={project.screenshots} 
-                  alt={project.title} 
-                />
-              )
-            ) : (
-              <DeviceMockup 
-                type={project.tags.includes("Mobile") ? "phone" : "laptop"}
-                screenshot={displayedScreenshot}
-                alt={project.title}
-              />
-            )}
-          </div>
-          <div className={styles.frontContent}>
-            <h3>{project.title}</h3>
-            <div className={styles.tags}>
-              {project.tags.map(tag => (
-                <span key={tag} className={styles.tag}>{tag}</span>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Progress Dots */}
+            <div className={styles.slideshowProgress} style={{ opacity: isHovered ? 1 : 0 }}>
+              {allImages.map((_, i) => (
+                <div key={i} className={`${styles.progressDot} ${i === currentImageIndex ? styles.activeDot : ""}`} />
               ))}
             </div>
-            <div className={styles.flipHint}>
-              <span>Hover to flip for details</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 11a8.1 8.1 0 0 0-15.5-2m-.5-4v4h4" />
-                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+          </div>
+        </motion.div>
+
+        {/* Layer 2: Content (Separated & Floating High) */}
+        <motion.div
+          className={styles.cardContent}
+          style={{
+            transform: "translateZ(60px)",
+            transformStyle: "preserve-3d",
+            z: contentZ // Parallax lift
+          }}
+        >
+          <div className={styles.tags}>
+            {project.tags.map((tag) => (
+              <span key={tag} className={styles.tag}>
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <h3 className={styles.title}>{project.title}</h3>
+          <p className={styles.subtitle}>{project.subtitle}</p>
+
+          <div className={styles.footer}>
+            <Link
+              href={`/work/${project.slug}`}
+              className={styles.viewLink}
+              onClick={(e) => e.stopPropagation()}
+            >
+              Case Study
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-            </div>
+            </Link>
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.githubLink}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaGithub />
+            </a>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Back Face */}
-        <div className={styles.cardBack}>
-          <div className={styles.backContent}>
-            <h3>{project.title}</h3>
-            <p>{project.description}</p>
-            
-            <div className={styles.techStack}>
-              <h4>Technologies</h4>
-              <div className={styles.techGrid}>
-                {project.technologies.slice(0, 6).map(tech => (
-                  <span key={tech} className={styles.techItem}>{tech}</span>
-                ))}
-              </div>
-            </div>
-
-            <div className={styles.actions}>
-            <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link 
-                  href={`/work/${project.slug}`}
-                  className={styles.viewProjectBtn}
-                >
-                  View Case Study
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" />
-                    <line x1="16" y1="17" x2="8" y2="17" />
-                    <polyline points="10 9 9 9 8 9" />
-                  </svg>
-                </Link>
-              </motion.div>
-            </div>
-          </div>
-        </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

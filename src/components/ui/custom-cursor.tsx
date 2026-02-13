@@ -1,81 +1,146 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import styles from "./custom-cursor.module.css";
+import { usePathname } from "next/navigation";
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [cursorVariant, setCursorVariant] = useState("default");
+  const pathname = usePathname();
+
+  // Use MotionValues for high-performance updates
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  // Snappy spring for Pop-Art feel
+  const springConfig = { damping: 20, stiffness: 300, mass: 0.2 };
+  const followerX = useSpring(mouseX, springConfig);
+  const followerY = useSpring(mouseY, springConfig);
+
+  // Center the cursor and follower
+  const cursorX = useTransform(mouseX, (x) => x - 6); // 12px / 2 = 6
+  const cursorY = useTransform(mouseY, (y) => y - 6);
+
+  const followerXCentered = useTransform(followerX, (x) => x - 22); // 44px / 2 = 22
+  const followerYCentered = useTransform(followerY, (y) => y - 22);
 
   useEffect(() => {
     const mouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
 
     window.addEventListener("mousemove", mouseMove);
 
-    // Detect hoverable elements
+    // Initial positioning
+    const handleInitialMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      followerX.set(e.clientX);
+      followerY.set(e.clientY);
+      window.removeEventListener("mousemove", handleInitialMove);
+    };
+    window.addEventListener("mousemove", handleInitialMove, { once: true });
+
+    return () => {
+      window.removeEventListener("mousemove", mouseMove);
+    };
+  }, [mouseX, mouseY, followerX, followerY]);
+
+  // Handle route changes
+  useEffect(() => {
+    setCursorVariant("default");
+  }, [pathname]);
+
+  // Handle hover states
+  useEffect(() => {
     const handleMouseEnter = () => setCursorVariant("hover");
     const handleMouseLeave = () => setCursorVariant("default");
 
-    const links = document.querySelectorAll("a, button, .hoverable");
+    const selectors = "a, button, .hoverable, [role='button'], input, textarea, select";
+    const links = document.querySelectorAll(selectors);
+
     links.forEach((link) => {
       link.addEventListener("mouseenter", handleMouseEnter);
       link.addEventListener("mouseleave", handleMouseLeave);
     });
 
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          const newLinks = (mutation.target as Element).querySelectorAll(selectors);
+          newLinks.forEach((link) => {
+            link.removeEventListener("mouseenter", handleMouseEnter);
+            link.removeEventListener("mouseleave", handleMouseLeave);
+            link.addEventListener("mouseenter", handleMouseEnter);
+            link.addEventListener("mouseleave", handleMouseLeave);
+          });
+        }
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
     return () => {
-      window.removeEventListener("mousemove", mouseMove);
       links.forEach((link) => {
         link.removeEventListener("mouseenter", handleMouseEnter);
         link.removeEventListener("mouseleave", handleMouseLeave);
       });
+      observer.disconnect();
     };
-  }, []);
+  }, [pathname]);
 
   const variants = {
     default: {
-      x: mousePosition.x - 16,
-      y: mousePosition.y - 16,
       scale: 1,
+      rotate: 0,
+      backgroundColor: "white",
     },
     hover: {
-      x: mousePosition.x - 16,
-      y: mousePosition.y - 16,
+      scale: 1.3,
+      rotate: 0,
+      backgroundColor: "white",
+    },
+  };
+
+  const followerVariants = {
+    default: {
+      scale: 1,
+      opacity: 1,
+      backgroundColor: "transparent",
+      borderWidth: "1px",
+      borderColor: "rgba(255, 255, 255, 0.6)",
+    },
+    hover: {
       scale: 1.5,
-      mixBlendMode: "difference" as const,
+      opacity: 1,
+      backgroundColor: "transparent",
+      borderColor: "var(--accent)",
     },
   };
 
   return (
     <>
       <motion.div
+        className={styles.cursorFollower}
+        style={{
+          x: followerXCentered,
+          y: followerYCentered,
+        }}
+        variants={followerVariants}
+        animate={cursorVariant}
+      />
+
+      <motion.div
         className={styles.cursor}
+        style={{
+          x: cursorX,
+          y: cursorY,
+        }}
         variants={variants}
         animate={cursorVariant}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28,
-          mass: 0.5,
-        }}
-      />
-      <motion.div
-        className={styles.cursorFollower}
-        animate={{
-          x: mousePosition.x - 6,
-          y: mousePosition.y - 6,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 150,
-          damping: 15,
-          mass: 0.1,
-        }}
+        transition={{ type: "spring", stiffness: 500, damping: 28 }}
       />
     </>
   );

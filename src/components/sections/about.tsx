@@ -4,19 +4,20 @@ import { useRef, useEffect } from "react";
 import { motion, useSpring, useInView, useTransform, useMotionValue } from "framer-motion";
 import Image from "next/image";
 import GitHubStats from "./github-stats";
-import { FaCode, FaLayerGroup } from "react-icons/fa";
+import { FaCode, FaServer, FaMobileAlt, FaBriefcase, FaLaptopCode, FaCubes } from "react-icons/fa";
 import styles from "./about.module.css";
 
 interface Stat {
   label: string;
   value: number;
   suffix: string;
+  icon: React.ReactNode;
 }
 
 const stats: Stat[] = [
-  { label: "Months Internship", value: 1, suffix: "" },
-  { label: "Projects Completed", value: 2, suffix: "" },
-  { label: "Technologies", value: 10, suffix: "+" },
+  { label: "Months Internship", value: 1, suffix: "", icon: <FaBriefcase /> },
+  { label: "Projects Built", value: 2, suffix: "", icon: <FaLaptopCode /> },
+  { label: "Technologies", value: 10, suffix: "+", icon: <FaCubes /> },
 ];
 
 function Counter({ value, suffix, delay }: { value: number; suffix: string; delay: number }) {
@@ -28,13 +29,11 @@ function Counter({ value, suffix, delay }: { value: number; suffix: string; dela
     damping: 20,
     duration: 2
   });
-  
-  // Create a display value that rounds the spring value
+
   const displayValue = useTransform(springValue, (current) => Math.floor(current));
 
   useEffect(() => {
     if (isInView) {
-      // Add a small delay matching the entrance animation
       const timer = setTimeout(() => {
         springValue.set(value);
       }, delay * 1000);
@@ -43,7 +42,7 @@ function Counter({ value, suffix, delay }: { value: number; suffix: string; dela
   }, [isInView, value, delay, springValue]);
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       className={styles.statValue}
       initial={{ opacity: 0, y: 20 }}
@@ -57,128 +56,54 @@ function Counter({ value, suffix, delay }: { value: number; suffix: string; dela
 }
 
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-  
-  // 3D Tilt Logic
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  
-  const rotateX = useTransform(y, [-100, 100], [5, -5]); // Reduced rotation for elegance
-  const rotateY = useTransform(x, [-100, 100], [-5, 5]);
-  
-  // Shine effect - Linear sweep
-  const shineX = useTransform(x, [-100, 100], [-100, 200]);
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    x.set(event.clientX - centerX);
-    y.set(event.clientY - centerY);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   return (
-    <section id="about" ref={sectionRef} className={`${styles.about} section`}>
+    <section id="about" className={`${styles.about} section`}>
       <div className="container">
         <div className={styles.grid}>
+          {/* Left — Profile Image + Specialty Cards */}
           <div className={styles.imageSection}>
             <motion.div
               className={styles.imageWrapper}
-              style={{ 
-                rotateX, 
-                rotateY,
-                perspective: 1000
-              }}
-              initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
+              transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
             >
-              <div className={styles.imageContainer}>
-                {/* Layer 1: Deep Grid Background */}
-                <motion.div 
-                  className={styles.parallaxBack}
-                  style={{
-                    x: useTransform(x, [-100, 100], [-40, 40]),
-                    y: useTransform(y, [-100, 100], [-40, 40]),
-                  }}
+              <div className={styles.imageGlow} />
+              <div className={styles.blobFrame}>
+                <Image
+                  src="/pro-2.jpg"
+                  alt="Joe Mark M"
+                  width={400}
+                  height={400}
+                  className={styles.profileImage}
+                  priority
                 />
-
-                {/* Layer 2: Main Image */}
-                <div style={{ position: "relative", zIndex: 5, width: "100%", height: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-                  <Image
-                    src="/profile.png"
-                    alt="Joe Mark M"
-                    width={800}
-                    height={800}
-                    unoptimized
-                    className={styles.profileImage}
-                    priority
-                  />
-                </div>
-
-                {/* Layer 3: Glass Foreground Frame */}
-                <motion.div 
-                  className={styles.glassFrame}
-                  style={{
-                    x: useTransform(x, [-100, 100], [20, -20]),
-                    y: useTransform(y, [-100, 100], [20, -20]),
-                  }}
-                >
-                  <motion.div 
-                    className={styles.shine}
-                    style={{
-                      background: `linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0.0) 50%)`,
-                      x: shineX,
-                      opacity: 0.8
-                    }}
-                  />
-                </motion.div>
-
-                {/* Layer 4: Floating Badges (Float above everything) */}
-                <motion.div 
-                  className={styles.floatingBadge}
-                  style={{ 
-                    top: "15%", 
-                    left: "-15%", 
-                    rotate: -5,
-                    z: 60,
-                    x: useTransform(x, [-100, 100], [40, -40]),
-                    y: useTransform(y, [-100, 100], [20, -20])
-                  }}
-                >
-                  <FaCode />
-                  <span>Full Stack</span>
-                </motion.div>
-
-                <motion.div 
-                  className={styles.floatingBadge}
-                  style={{ 
-                    bottom: "20%", 
-                    right: "-15%", 
-                    rotate: 5,
-                    z: 50,
-                    x: useTransform(x, [-100, 100], [30, -30]),
-                    y: useTransform(y, [-100, 100], [-20, 20])
-                  }}
-                >
-                  <FaLayerGroup />
-                  <span>Architect</span>
-                </motion.div>
               </div>
-              <div className={styles.floatingOrb1}></div>
-              <div className={styles.floatingOrb2}></div>
+            </motion.div>
+
+            {/* Specialty Cards */}
+            <motion.div
+              className={styles.specialtyCards}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              {[
+                { icon: <FaCode />, label: "Frontend" },
+                { icon: <FaServer />, label: "Backend" },
+                { icon: <FaMobileAlt />, label: "Mobile" },
+              ].map((spec) => (
+                <div key={spec.label} className={styles.specialtyCard}>
+                  <div className={styles.specialtyIcon}>{spec.icon}</div>
+                  <div className={styles.specialtyLabel}>{spec.label}</div>
+                </div>
+              ))}
             </motion.div>
           </div>
 
+          {/* Right — Content */}
           <div className={styles.content}>
             <motion.h2
               className={styles.title}
@@ -235,12 +160,21 @@ export default function About() {
               </p>
             </motion.div>
 
+            {/* Stats Row */}
             <div className={styles.stats}>
               {stats.map((stat, index) => (
-                <div key={stat.label} className={styles.stat}>
+                <motion.div
+                  key={stat.label}
+                  className={styles.stat}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                >
+                  <div className={styles.statIcon}>{stat.icon}</div>
                   <Counter value={stat.value} suffix={stat.suffix} delay={0.4 + index * 0.1} />
                   <div className={styles.statLabel}>{stat.label}</div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -255,8 +189,8 @@ export default function About() {
             >
               Download Resume
               <svg
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"

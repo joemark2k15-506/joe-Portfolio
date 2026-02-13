@@ -1,20 +1,18 @@
 /* ===========================
-   CAREER JOURNEY SECTION
-   High-performance 60-90fps animations
+   ENERGY BEAM TIMELINE
    =========================== */
 
 .careerJourney {
   position: relative;
-  min-height: 300vh; /* Extended scroll area for journey */
+  min-height: 100vh;
   padding: var(--space-5xl) 0;
   overflow: hidden;
   background: var(--background);
 }
 
-/* Header Section */
 .header {
   text-align: center;
-  margin-bottom: var(--space-4xl);
+  margin-bottom: var(--space-5xl);
   position: relative;
   z-index: 10;
 }
@@ -23,234 +21,214 @@
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800;
   margin-bottom: var(--space-md);
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(1rem, 2vw, 1.15rem);
   color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
 }
 
-/* Journey Wrapper - Contains Road, Car, and Milestones */
-.journeyWrapper {
+/* Timeline Container */
+.timelineWrapper {
   position: relative;
-  min-height: 250vh;
-  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-2xl) 0;
 }
 
-/* ===========================
-   ROAD 
-   =========================== */
-
-.road {
+/* Central Beam Line */
+.beamLine {
   position: absolute;
   left: 50%;
   top: 0;
-  width: 200px;
-  height: 100%;
+  bottom: 0;
+  width: 4px;
+  background: rgba(255, 255, 255, 0.05);
   transform: translateX(-50%);
-  z-index: 1;
-  /* GPU acceleration */
-  will-change: transform;
-  transform: translateX(-50%) translateZ(0);
-  backface-visibility: hidden;
+  border-radius: 4px;
+  z-index: 0;
 }
 
-.roadTexture {
+/* Moving Light Beam - handled by Framer Motion in JS, but base style here */
+.beamProgress {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    180deg,
-    hsl(0, 0%, 20%) 0%,
-    hsl(0, 0%, 15%) 50%,
-    hsl(0, 0%, 18%) 100%
-  );
-  border-left: 2px solid hsl(0, 0%, 25%);
-  border-right: 2px solid hsl(0, 0%, 25%);
+  background: var(--gradient-primary);
+  border-radius: 4px;
+  box-shadow: 0 0 20px var(--glow-primary);
+  transform-origin: top;
 }
 
-[data-theme="dark"] .roadTexture {
-  background: linear-gradient(
-    180deg,
-    hsl(225, 20%, 12%) 0%,
-    hsl(225, 20%, 8%) 50%,
-    hsl(225, 20%, 10%) 100%
-  );
-  border-left: 2px solid hsl(225, 20%, 15%);
-  border-right: 2px solid hsl(225, 20%, 15%);
-}
-
-/* Lane Markings */
-.laneMarkers {
+/* Pulsing Current Marker at the top */
+.startMarker {
   position: absolute;
+  top: -10px;
   left: 50%;
-  top: 0;
-  width: 4px;
-  height: 100%;
   transform: translateX(-50%);
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--text-tertiary) 0px,
-    var(--text-tertiary) 30px,
-    transparent 30px,
-    transparent 60px
-  );
-  opacity: 0.6;
-  animation: roadScroll 2s linear infinite;
+  width: 24px;
+  height: 24px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--glow-primary);
+  z-index: 2;
+  animation: pulseMarker 2s infinite;
 }
 
-@keyframes roadScroll {
-  from {
-    background-position: 0 0;
+@keyframes pulseMarker {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 200, 220, 0.4);
   }
-  to {
-    background-position: 0 60px;
-  }
-}
 
-/* Pause animation when user prefers reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .laneMarkers {
-    animation: none;
+  70% {
+    box-shadow: 0 0 0 15px rgba(0, 200, 220, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 200, 220, 0);
   }
 }
 
-/* ===========================
-   MILESTONES
-   =========================== */
-
-.milestonesContainer {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  z-index: 50;
-  padding: var(--space-4xl) 0;
-}
-
-.milestoneCard {
+/* Milestones */
+.milestone {
   position: relative;
   width: 100%;
   margin-bottom: var(--space-5xl);
   display: flex;
-  align-items: center;
   justify-content: center;
-  /* GPU acceleration */
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  align-items: center;
+  opacity: 0;
+  /* Animated in */
 }
 
-/* Alternating Layout - Fluid spacing */
-.milestoneCard.left {
+/* Node on the beam */
+.timelineNode {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  width: 16px;
+  height: 16px;
+  background: var(--background);
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  z-index: 2;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 10px var(--glow-primary);
+}
+
+.milestone.active .timelineNode {
+  background: var(--primary);
+  transform: translateX(-50%) scale(1.2);
+  box-shadow: 0 0 20px var(--glow-primary);
+}
+
+/* Alternating Layout */
+.contentWrapper {
+  width: 45%;
+  position: relative;
+}
+
+.milestone:nth-child(odd) .contentWrapper {
+  margin-right: auto;
+  text-align: right;
+  padding-right: var(--space-2xl);
+}
+
+.milestone:nth-child(even) .contentWrapper {
+  margin-left: auto;
+  text-align: left;
+  padding-left: var(--space-2xl);
+}
+
+/* Date/Period Label (Opposite side) */
+.dateLabel {
+  position: absolute;
+  top: 0;
+  width: 45%;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--primary);
+  font-weight: 600;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+}
+
+.milestone:nth-child(odd) .dateLabel {
+  left: 55%;
   justify-content: flex-start;
-  padding-left: 55%; /* Fluid relative offset */
+  padding-left: var(--space-2xl);
 }
 
-.milestoneCard.right {
+.milestone:nth-child(even) .dateLabel {
+  right: 55%;
   justify-content: flex-end;
-  padding-right: 55%; /* Fluid relative offset */
+  padding-right: var(--space-2xl);
+}
+
+/* Card Style */
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 30px var(--glow-primary);
 }
 
 /* Card Content */
-.cardContent {
-  position: relative;
-  width: clamp(280px, 38vw, 450px); /* Fluid width - shrinks on narrow screens */
-  padding: var(--space-xl);
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
 }
 
-.contentBody {
-  flex: 1;
+.milestone:nth-child(odd) .cardHeader {
+  flex-direction: row-reverse;
 }
 
-.cardContent {
-  /* GPU acceleration */
-  transform: translateZ(0);
-  backface-visibility: hidden;
+.iconBox {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(0, 200, 220, 0.1);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 1px solid rgba(0, 200, 220, 0.2);
 }
 
-.cardContent:hover {
-  transform: translateY(-4px) translateZ(0);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15), 0 0 40px var(--primary-light),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-  border-color: var(--primary);
-}
-
-/* Neon glow on milestone cards */
-.cardContent::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border-radius: var(--radius-xl);
-  opacity: 0;
-  z-index: -1;
-  filter: blur(20px);
-  transition: opacity 0.3s ease;
-}
-
-.cardContent:hover::before {
-  opacity: 0.3;
-}
-
-/* Phase Label */
-.phase {
-  display: inline-block;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--primary-light);
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: var(--space-xs);
-}
-
-/* Period */
-.period {
-  display: block;
-  font-size: 0.875rem;
-  color: var(--text-tertiary);
-  font-weight: 600;
-  margin-bottom: var(--space-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Title */
-.title {
-  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+.roleTitle {
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
-/* Organization */
-.organization {
-  font-size: 1rem;
+.orgName {
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-family: var(--font-mono);
   margin-bottom: var(--space-md);
-  opacity: 0.9;
 }
 
-/* Description */
 .description {
   font-size: 0.95rem;
   color: var(--text-secondary);
@@ -258,321 +236,70 @@
   margin-bottom: var(--space-lg);
 }
 
-/* Tech Stack Icons */
+/* Tech Pills */
 .techStack {
   display: flex;
-  gap: var(--space-sm);
+  gap: 6px;
   flex-wrap: wrap;
-  margin-bottom: var(--space-md);
 }
 
-.techIcon {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  color: var(--primary-light);
-  background: var(--surface);
+.milestone:nth-child(odd) .techStack {
+  justify-content: flex-end;
+}
+
+.techPill {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-elevated);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  transition: all 0.2s ease;
-  cursor: pointer;
+  color: var(--text-secondary);
 }
 
-.techIcon:hover {
-  transform: translateY(-2px) scale(1.1);
-  color: var(--secondary-light);
-  border-color: var(--secondary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* CTA Button */
-.cta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-sm) var(--space-lg);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--primary-light);
-  background: transparent;
-  border: 2px solid var(--primary);
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.cta:hover {
-  background: var(--primary);
-  color: white;
-  transform: translateX(4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* ===========================
-   MILESTONE MARKER
-   =========================== */
-
-.markerWrapper {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-}
-
-.marker {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: white;
-  box-shadow: 0 0 0 8px var(--background), 0 0 0 10px var(--primary),
-    0 0 30px var(--primary), 0 8px 24px rgba(0, 0, 0, 0.3);
-  animation: markerPulse 2s ease-in-out infinite;
-  /* GPU acceleration */
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-@keyframes markerPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 8px var(--background), 0 0 0 10px var(--primary),
-      0 0 30px var(--primary), 0 8px 24px rgba(0, 0, 0, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 0 8px var(--background), 0 0 0 10px var(--primary),
-      0 0 50px var(--primary), 0 0 70px var(--secondary),
-      0 8px 24px rgba(0, 0, 0, 0.3);
-  }
-}
-
-/* ===========================
-   STATIC TIMELINE (Reduced Motion Fallback)
-   =========================== */
-
-.staticTimeline {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: var(--space-xl) 0;
-}
-
-.staticMilestone {
-  display: flex;
-  gap: var(--space-xl);
-  margin-bottom: var(--space-3xl);
-  position: relative;
-}
-
-.staticMilestone::before {
-  content: "";
-  position: absolute;
-  left: 30px;
-  top: 60px;
-  bottom: -60px;
-  width: 2px;
-  background: var(--border);
-}
-
-.staticMilestone:last-child::before {
-  display: none;
-}
-
-.staticMarker {
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: white;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-.staticContent {
-  flex: 1;
-  padding: var(--space-md) var(--space-xl);
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-}
-
-/* ===========================
-   RESPONSIVE DESIGN
-   =========================== */
-
-@media (max-width: 1024px) {
-  .milestoneCard.left,
-  .milestoneCard.right {
-    padding-left: 0;
-    padding-right: 0;
-    justify-content: center;
-  }
-
-  /* Force safe distance from center even if browser simulates desktop */
-  .milestoneCard.left .cardContent {
-    margin-left: max(100px, 15vw);
-  }
-
-  .milestoneCard.right .cardContent {
-    margin-right: max(100px, 15vw);
-  }
-  
-  .cardContent {
-    width: clamp(260px, 40vw, 400px);
-    margin-left: auto; /* Center on tablet */
-    margin-right: auto;
-  }
-  
-  .markerWrapper {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-  }
-
-  .road {
-    width: 120px;
-  }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-  .careerJourney {
-    min-height: 200vh;
+  .beamLine {
+    left: 20px;
   }
 
-  .journeyWrapper {
-    min-height: 180vh;
+  .startMarker {
+    left: 20px;
   }
 
-  .road {
-    width: 100px;
+  .timelineNode {
+    left: 20px;
   }
 
-  .milestoneCard {
-    margin-bottom: var(--space-3xl);
+  .contentWrapper {
+    width: calc(100% - 60px);
+    margin-left: 60px !important;
+    text-align: left !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
-  .milestoneCard.left .cardContent,
-  .milestoneCard.right .cardContent {
-    margin-left: 0;
-    margin-right: 0;
-    max-width: 100%;
+  .cardHeader {
+    flex-direction: row !important;
   }
 
-  .milestoneCard.left {
-    padding-left: 0;
-    padding-right: var(--space-md);
+  .techStack {
+    justify-content: flex-start !important;
   }
 
-  .milestoneCard.right {
-    padding-left: var(--space-md);
-    padding-right: 0;
-  }
-
-  .cardContent {
-    padding: var(--space-lg);
-  }
-
-  .marker {
-    width: 44px;
-    height: 44px;
-    font-size: 1.1rem;
-    box-shadow: 0 0 0 6px var(--background), 0 0 0 8px var(--primary),
-      0 0 15px var(--primary), 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-}
-
-@media (max-width: 640px) {
-  .header {
-    margin-bottom: var(--space-2xl);
-  }
-
-  .milestoneCard.left,
-  .milestoneCard.right {
-    display: block;
-  }
-
-  .milestoneCard {
-    flex-direction: column-reverse; /* Stacks Icon on TOP of Card */
-    align-items: center;
-    gap: var(--space-md);
-  }
-
-  .cardContent {
-    margin-left: 0;
+  .dateLabel {
+    position: relative;
     width: 100%;
-    max-width: 100%;
-    padding: var(--space-lg);
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0 0 var(--space-xs) 60px !important;
+    justify-content: flex-start !important;
+    margin-top: -30px;
+    margin-bottom: 20px;
   }
 
-  .markerWrapper {
-    position: static;
-    transform: none;
-    margin-bottom: var(--space-xs);
-  }
-
-  .marker {
-    width: 48px;
-    height: 48px;
-    font-size: 1.25rem;
+  .milestone {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: var(--space-4xl);
   }
 }
-
-@media (max-width: 380px) {
-  .sectionTitle {
-    font-size: 2rem;
-  }
-
-  .road {
-    width: 60px;
-  }
-
-  .marker {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-    box-shadow: 0 0 0 4px var(--background), 0 0 0 6px var(--primary);
-  }
-
-  .cardContent {
-    padding: var(--space-md);
-  }
-}
-
-/* ===========================
-   PERFORMANCE OPTIMIZATIONS
-   =========================== */
-
-/* Use CSS containment for better performance */
-.milestoneCard {
-  contain: layout style;
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .road,
-  .milestoneCard {
-    will-change: auto;
-  }
-
-  .marker {
-    animation: none;
-  }
-
-  .laneMarkers {
-    animation: none;
-  }
-}
-

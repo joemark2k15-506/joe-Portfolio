@@ -14,7 +14,7 @@
 }
 
 .title {
-  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 900;
   margin-bottom: var(--space-md);
   letter-spacing: -0.04em;
@@ -43,14 +43,12 @@
   bottom: 0;
   left: 50%;
   width: 4px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--primary),
-    #00d2ff,
-    var(--primary),
-    transparent
-  );
+  background: linear-gradient(to bottom,
+      transparent,
+      var(--primary),
+      #00d2ff,
+      var(--primary),
+      transparent);
   transform: translateX(-50%);
   z-index: 1;
   filter: blur(1px);
@@ -96,7 +94,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   padding: var(--space-2xl);
   border-radius: 32px;
-  box-shadow: 
+  box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.3),
     inset 0 0 20px rgba(255, 255, 255, 0.02);
   transition: border-color 0.4s ease, background 0.4s ease;
@@ -112,11 +110,9 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
-    circle at center,
-    rgba(var(--primary-rgb), 0.1) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at center,
+      rgba(var(--primary-rgb), 0.1) 0%,
+      transparent 70%);
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
@@ -244,7 +240,9 @@
 }
 
 @media (max-width: 1024px) {
-  .beam, .beamGlow {
+
+  .beam,
+  .beamGlow {
     left: 40px;
   }
 

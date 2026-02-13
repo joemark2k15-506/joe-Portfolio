@@ -12,7 +12,7 @@ const themes = [
   { id: "ocean" as const, name: "Ocean", color: "#000a14", border: "#00708c" },
 ];
 
-export default function ThemeSelector() {
+export default function ThemeSelector({ onSelect }: { onSelect?: () => void }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -22,27 +22,34 @@ export default function ThemeSelector() {
     });
   }, []);
 
+  const handleSelect = (id: typeof themes[number]["id"]) => {
+    setTheme(id);
+    if (onSelect) {
+      setTimeout(() => onSelect(), 150); // Small delay for visual feedback
+    }
+  };
+
   return (
     <div className={styles.selector}>
       <h4 className={styles.title}>Select Theme</h4>
       <div className={styles.grid}>
         {themes.map((t) => {
           const isActive = mounted && theme === t.id;
-          
+
           return (
             <button
               key={t.id}
               className={`${styles.themeBtn} ${isActive ? styles.active : ""}`}
-              onClick={() => setTheme(t.id)}
+              onClick={() => handleSelect(t.id)}
               aria-label={`Switch to ${t.name} theme`}
             >
-              <div 
-                className={styles.preview} 
+              <div
+                className={styles.preview}
                 style={{ backgroundColor: t.color, borderColor: t.border }}
               />
               <span className={styles.name}>{t.name}</span>
               {isActive && (
-                <motion.div 
+                <motion.div
                   layoutId="activeTheme"
                   className={styles.activeRing}
                 />

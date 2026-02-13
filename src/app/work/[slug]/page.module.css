@@ -28,14 +28,16 @@
 
 @media (max-width: 768px) {
   .nav {
-    top: 5rem; /* Push below global navbar on mobile */
+    top: 5rem;
+    /* Push below global navbar on mobile */
     left: 1rem;
   }
-  
+
   .backLink {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
-    background: var(--background); /* Ensure visibility against hero */
+    background: var(--background);
+    /* Ensure visibility against hero */
   }
 }
 
@@ -54,11 +56,9 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: radial-gradient(
-    circle at 50% 30%,
-    rgba(var(--primary-rgb), 0.15) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at 50% 30%,
+      rgba(var(--primary-rgb), 0.15) 0%,
+      transparent 70%);
 }
 
 .heroContent {
@@ -74,7 +74,7 @@
 
 .category {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -85,14 +85,12 @@
 }
 
 .title {
-  font-size: 4rem;
+  font-size: 6rem;
   font-weight: 800;
   line-height: 1.1;
-  background: linear-gradient(
-    135deg,
-    var(--foreground) 0%,
-    var(--text-secondary) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--foreground) 0%,
+      var(--text-secondary) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -160,11 +158,9 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    var(--background) 100%
-  );
+  background: linear-gradient(to bottom,
+      transparent 50%,
+      var(--background) 100%);
   pointer-events: none;
 }
 
@@ -183,7 +179,7 @@
 .featuresSection h3,
 .gallery h3,
 .techSection h3 {
-  font-size: 2rem;
+  font-size: 3rem;
   margin-bottom: 2rem;
   color: var(--foreground);
 }
@@ -281,11 +277,36 @@
   position: relative;
 }
 
+.mobileGalleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.mobileGalleryItem {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  aspect-ratio: 9 / 16;
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  /* Letterbox bg */
+}
+
 .screenshot {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+}
+
+.mobileScreenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Prevent cropping */
+  transition: transform 0.5s ease;
+  padding: 0.5rem;
 }
 
 .galleryItem:hover .screenshot {
@@ -306,7 +327,7 @@
 
 @media (max-width: 768px) {
   .title {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
   }
 
   .hero {

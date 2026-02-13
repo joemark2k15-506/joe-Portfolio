@@ -1,3 +1,7 @@
+/* ===========================
+   CINEMATIC SPLIT-SCREEN HERO
+   =========================== */
+
 .hero {
   position: relative;
   min-height: 100vh;
@@ -6,94 +10,187 @@
   justify-content: center;
   overflow: hidden;
   background: var(--background);
+  contain: paint layout;
+  content-visibility: auto;
+  contain-intrinsic-size: 100vh;
 }
 
+/* Aurora mesh background */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, hsla(187, 100%, 50%, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, hsla(210, 100%, 56%, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 60% 80%, hsla(260, 85%, 60%, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 40% 60%, hsla(38, 100%, 55%, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: auroraPulse 8s ease-in-out infinite alternate;
+  will-change: opacity;
+}
+
+@keyframes auroraPulse {
+  0% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Grid background subtle pattern */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+/* Split layout container */
 .content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  padding: var(--space-2xl);
-  max-width: 1000px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-3xl);
+  padding: var(--space-5xl) var(--space-2xl) var(--space-2xl);
+  max-width: 1280px;
   margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
 }
 
+/* Left side — text content */
 .textContainer {
-  margin-bottom: var(--space-5xl);
+  text-align: left;
+}
+
+/* Greeting label */
+.greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--primary);
+  padding: 6px 14px;
+  background: rgba(0, 200, 220, 0.08);
+  border: 1px solid rgba(0, 200, 220, 0.15);
+  border-radius: 999px;
+  margin-bottom: var(--space-xl);
+  letter-spacing: 0.02em;
+}
+
+.greeting .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: dotPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--glow-primary);
+}
+
+@keyframes dotPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
 }
 
 .title {
-  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.05;
   margin-bottom: var(--space-lg);
+  letter-spacing: -0.03em;
 }
 
 .name {
   display: inline-block;
+  background-size: 200% 200%;
   animation: gradient-shift 5s ease infinite;
 }
 
 .subtitleWrapper {
   min-height: 40px;
-  height: auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: var(--space-lg);
 }
 
 .subtitle {
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
   color: var(--primary);
   font-weight: 700;
   font-family: var(--font-accent);
 }
 
 .description {
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   color: var(--text-secondary);
-  max-width: 650px;
-  margin: 0 auto var(--space-2xl);
+  max-width: 500px;
+  margin: 0 0 var(--space-2xl);
   line-height: 1.8;
 }
 
+/* CTA Buttons */
 .buttons {
   display: flex;
-  gap: var(--space-lg);
-  justify-content: center;
+  gap: var(--space-md);
   flex-wrap: wrap;
+  margin-bottom: var(--space-2xl);
 }
 
 .primaryBtn,
 .secondaryBtn {
-  padding: var(--space-md) var(--space-3xl);
-  font-size: 1.125rem;
+  padding: 14px 32px;
+  font-size: 0.95rem;
   font-weight: 600;
   font-family: var(--font-accent);
-  border-radius: var(--radius-full);
+  border-radius: 999px;
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all var(--transition-fast);
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  min-width: 200px;
   justify-content: center;
   border: none;
+  will-change: transform;
 }
 
 .primaryBtn {
   background: var(--gradient-primary);
   color: white;
-  box-shadow: 0 4px 20px hsla(262, 83%, 58%, 0.4);
+  box-shadow: 0 4px 24px var(--glow-primary);
 }
 
 .primaryBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px hsla(262, 83%, 58%, 0.6);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 40px var(--glow-primary);
 }
 
 .secondaryBtn {
-  background: var(--surface);
+  background: transparent;
   color: var(--text-primary);
   border: 1px solid var(--border);
   backdrop-filter: blur(10px);
@@ -102,13 +199,217 @@
 .secondaryBtn:hover {
   border-color: var(--primary);
   color: var(--primary);
-  transform: translateY(-2px);
-  background: var(--surface-elevated);
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px var(--glow-primary);
 }
 
+/* Social links row */
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.socialLink:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 20px var(--glow-primary);
+  background: rgba(0, 200, 220, 0.08);
+}
+
+/* ========================
+   Right Side — Profile with orbiting icons
+   ======================== */
+.profileSection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.profileWrapper {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Blob border around profile image */
+.blobContainer {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+  overflow: hidden;
+  animation: blobMorph 8s ease-in-out infinite;
+  box-shadow:
+    0 0 40px var(--glow-primary),
+    0 0 80px rgba(0, 200, 220, 0.15),
+    inset 0 0 30px rgba(0, 0, 0, 0.2);
+  border: 3px solid rgba(0, 200, 220, 0.3);
+}
+
+@keyframes blobMorph {
+
+  0%,
+  100% {
+    border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+  }
+
+  25% {
+    border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%;
+  }
+
+  50% {
+    border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+  }
+
+  75% {
+    border-radius: 50% 50% 60% 40% / 60% 40% 50% 50%;
+  }
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.05) saturate(1.1);
+}
+
+/* Orbiting tech icons */
+.orbitRing {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed var(--border);
+  border-radius: 50%;
+  animation: orbitSpin 30s linear infinite;
+  will-change: transform;
+}
+
+.orbitRing2 {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  border: 1px dashed var(--border);
+  border-radius: 50%;
+  animation: orbitSpin 30s linear infinite;
+  will-change: transform;
+  left: -10%;
+  top: -10%;
+  animation-duration: 45s;
+  animation-direction: reverse;
+  border-style: dotted;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbitIcon {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  color: var(--text-primary);
+  /* Counter-rotate to keep icons upright */
+  animation: orbitCounterSpin 30s linear infinite;
+  will-change: transform;
+}
+
+.orbitIcon2 {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  color: var(--text-primary);
+  will-change: transform;
+  animation: orbitCounterSpin 45s linear infinite reverse;
+}
+
+@keyframes orbitCounterSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Glow behind the profile */
+.profileGlow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+      var(--glow-primary) 0%,
+      var(--glow-secondary) 40%,
+      transparent 70%);
+  filter: blur(60px);
+  z-index: -1;
+  animation: glowPulse 4s ease-in-out infinite alternate;
+  will-change: opacity, transform;
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+
+  100% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+/* Scroll Indicator */
 .scrollIndicator {
   position: absolute;
-  bottom: var(--space-3xl);
+  bottom: var(--space-2xl);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -116,25 +417,28 @@
   align-items: center;
   gap: var(--space-sm);
   color: var(--text-tertiary);
-  font-size: 0.875rem;
-  animation: bounce 2s ease-in-out infinite;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  animation: bounce 2.5s ease-in-out infinite;
+  z-index: 2;
 }
 
 .mouse {
-  width: 26px;
-  height: 40px;
+  width: 22px;
+  height: 36px;
   border: 2px solid var(--text-tertiary);
-  border-radius: 20px;
+  border-radius: 14px;
   position: relative;
 }
 
 .wheel {
-  width: 4px;
-  height: 8px;
-  background: var(--text-tertiary);
+  width: 3px;
+  height: 6px;
+  background: var(--primary);
   border-radius: 2px;
   position: absolute;
-  top: 8px;
+  top: 7px;
   left: 50%;
   transform: translateX(-50%);
   animation: scroll 1.5s ease-in-out infinite;
@@ -143,17 +447,88 @@
 @keyframes scroll {
   0% {
     opacity: 1;
-    top: 8px;
+    top: 7px;
   }
+
   100% {
     opacity: 0;
-    top: 24px;
+    top: 20px;
+  }
+}
+
+/* ========================
+   Responsive
+   ======================== */
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: var(--space-5xl) var(--space-lg) var(--space-xl);
+    gap: var(--space-2xl);
+  }
+
+  .textContainer {
+    text-align: center;
+    order: 2;
+  }
+
+  .greeting {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .subtitleWrapper {
+    justify-content: center;
+  }
+
+  .description {
+    margin: 0 auto var(--space-2xl);
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .socialRow {
+    justify-content: center;
+  }
+
+  .profileSection {
+    order: 1;
+  }
+
+  .profileWrapper {
+    width: 320px;
+    height: 320px;
+  }
+
+  .blobContainer {
+    width: 250px;
+    height: 250px;
+  }
+
+  .profileGlow {
+    width: 250px;
+    height: 250px;
   }
 }
 
 @media (max-width: 768px) {
+  .profileSection {
+    display: none;
+  }
+
   .content {
-    padding: var(--space-5xl) var(--space-lg) var(--space-xl);
+    grid-template-columns: 1fr;
+    padding-top: var(--space-4xl);
+  }
+}
+
+
+@media (max-width: 640px) {
+  .content {
+    padding: var(--space-4xl) var(--space-md) var(--space-lg);
+    gap: var(--space-xl);
   }
 
   .buttons {
@@ -164,16 +539,59 @@
   .primaryBtn,
   .secondaryBtn {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+
+  .profileWrapper {
+    width: 260px;
+    height: 260px;
+  }
+
+  .blobContainer {
+    width: 200px;
+    height: 200px;
+  }
+
+  .profileGlow {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orbitIcon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
   }
 
   .scrollIndicator {
-    bottom: var(--space-xl);
+    display: none;
+  }
+
+  .profileSection {
+    display: none;
   }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
-  .canvas {
-    display: none;
+  .blobContainer {
+    animation: none;
+    border-radius: 50%;
+  }
+
+  .orbitRing,
+  .orbitRing2 {
+    animation: none;
+  }
+
+  .orbitIcon,
+  .orbitIcon2 {
+    animation: none;
+  }
+
+  .profileGlow {
+    animation: none;
   }
 }

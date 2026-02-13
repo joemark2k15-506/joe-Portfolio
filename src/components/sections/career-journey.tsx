@@ -1,183 +1,111 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { 
-  FaGraduationCap, 
-  FaBriefcase, 
-  FaCode, 
-  FaRocket,
-  FaReact,
-  FaNode,
-  FaJava,
-  FaDatabase,
-  FaGitAlt
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import {
+  FaGraduationCap,
+  FaBriefcase,
+  FaCode
 } from "react-icons/fa";
-import { 
-  SiMongodb, 
-  SiExpress, 
-  SiSpringboot, 
-  SiHibernate,
-  SiTypescript,
-  SiTailwindcss
-} from "react-icons/si";
 import styles from "./career-journey.module.css";
 
 interface Milestone {
   id: string;
-  period: string;
-  phase: string;
+  year: string;
   title: string;
-  organization: string;
+  role: string;
   description: string;
   technologies: string[];
-  type: "education" | "work" | "project" | "skill";
-  link?: string;
-  ctaText?: string;
+  type: "education" | "work" | "project";
 }
 
-// Reversed order: oldest to newest (bottom to top journey)
 const milestones: Milestone[] = [
   {
-    id: "destination",
-    period: "2026 →",
-    phase: "🎯 Current Focus",
-    title: "Building Production-Ready Applications",
-    organization: "Modern Full Stack Development",
-    description: "Crafting scalable, performant web applications with modern tech stacks and best practices.",
-    technologies: ["React", "TypeScript", "Node", "MongoDB", "Tailwind"],
-    type: "project",
-  },
-  {
-    id: "highway-2",
-    period: "Jun - Nov 2025",
-    phase: "⚡ Advanced Training",
-    title: "Advanced Full Stack Training",
-    organization: "Apollo Computer Education, Madurai",
-    description: "Deep-dive into enterprise Java (Spring Boot, Hibernate) and modern MERN architectures.",
-    technologies: ["Spring Boot", "Hibernate", "React", "Node", "Tailwind"],
+    id: "current",
+    year: "2026 → Present",
+    title: "Building Modern Web Apps",
+    role: "Full Stack Engineer",
+    description: "Architecting scalable production-ready applications with Next.js 15, React 19, and Server Actions. Focusing on performance, accessibility, and premium UI/UX.",
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind", "Node.js"],
     type: "work",
   },
   {
-    id: "acceleration",
-    period: "2023 - 2025",
-    phase: "🎓 Academic Excellence",
-    title: "Master of Computer Applications",
-    organization: "Arul Anandar College, Madurai",
-    description: "Specializing in advanced software engineering and architectural patterns. 75.9% academic performance.",
-    technologies: ["Java", "React", "Node", "Database", "Git"],
+    id: "training",
+    year: "Jun - Nov 2025",
+    title: "Apollo Computer Education",
+    role: "Advanced Full Stack Trainee",
+    description: "Intensive training in Enterprise Java Development and MERN Stack architecture. Built complex e-commerce and management systems.",
+    technologies: ["Java", "Spring Boot", "Hibernate", "Microservices"],
     type: "education",
   },
   {
-    id: "highway-1",
-    period: "Sep - Oct 2024",
-    phase: "🛣️ Industry Experience",
-    title: "Full Stack Engineer Intern",
-    organization: "XYLOINC Technologies, Coimbatore",
-    description: "Internship during MCA. Architected scalable MERN modules with real-time data synchronization.",
-    technologies: ["MongoDB", "Express", "React", "Node", "TypeScript"],
+    id: "mca",
+    year: "2023 - 2025",
+    title: "Arul Anandar College",
+    role: "Master of Computer Applications",
+    description: "Specialized in Software Engineering and Advanced Database Management. Achieved 75.9% academic excellence.",
+    technologies: ["Data Structures", "Algorithms", "System Design"],
+    type: "education",
+  },
+  {
+    id: "internship",
+    year: "Sep - Oct 2024",
+    title: "XYLOINC Technologies",
+    role: "Full Stack Intern",
+    description: "Developed and deployed key modules for client applications. Collaborated with senior developers to implement real-time features.",
+    technologies: ["MERN Stack", "Socket.io", "Redux", "REST APIs"],
     type: "work",
   },
   {
-    id: "learning-1",
-    period: "2019 - 2022",
-    phase: "📚 Foundation",
-    title: "B.Com (Computer Applications)",
-    organization: "NMS SVN College, Madurai",
-    description: "Bridging commerce and technology with database management and commercial systems.",
-    technologies: ["Database", "SQL"],
-    type: "education",
-  },
-  {
-    id: "start",
-    period: "2017 - 2018",
-    phase: "🚦 Beginning",
-    title: "Higher Secondary Education",
-    organization: "St. Britto Hr. Sec. School, Madurai",
-    description: "Foundation in computer science and mathematics. The beginning of the tech journey.",
-    technologies: [],
+    id: "bcom",
+    year: "2019 - 2022",
+    title: "NMS SVN College",
+    role: "B.Com (Computer Applications)",
+    description: "Bridged the gap between business logic and technical implementation. Foundation in commerce and application development.",
+    technologies: ["Business Logic", "Accounting", "SQL"],
     type: "education",
   },
 ];
 
-const techIcons: Record<string, React.ReactElement> = {
-  React: <FaReact />,
-  Node: <FaNode />,
-  Java: <FaJava />,
-  Database: <FaDatabase />,
-  Git: <FaGitAlt />,
-  MongoDB: <SiMongodb />,
-  Express: <SiExpress />,
-  "Spring Boot": <SiSpringboot />,
-  Hibernate: <SiHibernate />,
-  TypeScript: <SiTypescript />,
-  Tailwind: <SiTailwindcss />,
-  SQL: <FaDatabase />,
-};
-
-const MilestoneCard = ({ 
-  milestone, 
-  index 
-}: { 
-  milestone: Milestone; 
-  index: number 
-}) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Ultra-smooth spring animations for 60-90fps
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const rawScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.85, 1, 1, 0.85]);
-  const rawY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [50, 0, 0, -50]);
-
-  // Use spring for buttery smooth motion
-  const opacity = useSpring(rawOpacity, { stiffness: 200, damping: 30, mass: 0.5 });
-  const scale = useSpring(rawScale, { stiffness: 200, damping: 30, mass: 0.5 });
-  const y = useSpring(rawY, { stiffness: 200, damping: 30, mass: 0.5 });
-
+const MilestoneCard = ({ milestone, index }: { milestone: Milestone; index: number }) => {
   const isLeft = index % 2 === 0;
 
   return (
     <motion.div
-      ref={cardRef}
-      className={`${styles.milestoneCard} ${isLeft ? styles.left : styles.right}`}
-      style={{ opacity, scale, y }}
+      className={styles.milestone}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, delay: 0.2 }}
     >
-      <div className={styles.cardContent}>
-        <div className={styles.contentBody}>
-          <span className={styles.phase}>{milestone.phase}</span>
-          <span className={styles.period}>{milestone.period}</span>
-          <h3 className={styles.title}>{milestone.title}</h3>
-          <h4 className={styles.organization}>{milestone.organization}</h4>
-          <p className={styles.description}>{milestone.description}</p>
-          
-          {milestone.technologies.length > 0 && (
-            <div className={styles.techStack}>
-              {milestone.technologies.map((tech) => (
-                <div key={tech} className={styles.techIcon} title={tech}>
-                  {techIcons[tech] || <FaCode />}
-                </div>
-              ))}
+      {/* Date Label (Opposite Side) */}
+      <div className={styles.dateLabel}>{milestone.year}</div>
+
+      {/* Center Node */}
+      <div className={styles.timelineNode} />
+
+      {/* Content Card */}
+      <div className={styles.contentWrapper}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <div className={styles.iconBox}>
+              {milestone.type === "work" && <FaBriefcase />}
+              {milestone.type === "education" && <FaGraduationCap />}
+              {milestone.type === "project" && <FaCode />}
             </div>
-          )}
+            <div>
+              <h3 className={styles.roleTitle}>{milestone.role}</h3>
+              <div className={styles.orgName}>{milestone.title}</div>
+            </div>
+          </div>
 
-          {milestone.link && (
-            <a href={milestone.link} className={styles.cta} target="_blank" rel="noopener noreferrer">
-              {milestone.ctaText || "View Details"} →
-            </a>
-          )}
-        </div>
-      </div>
+          <p className={styles.description}>{milestone.description}</p>
 
-      <div className={styles.markerWrapper}>
-        <div className={styles.marker}>
-          {milestone.type === "education" && <FaGraduationCap />}
-          {milestone.type === "work" && <FaBriefcase />}
-          {milestone.type === "project" && <FaRocket />}
-          {milestone.type === "skill" && <FaCode />}
+          <div className={styles.techStack}>
+            {milestone.technologies.slice(0, 4).map(tech => (
+              <span key={tech} className={styles.techPill}>{tech}</span>
+            ))}
+          </div>
         </div>
       </div>
     </motion.div>
@@ -186,114 +114,60 @@ const MilestoneCard = ({
 
 export default function CareerJourney() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const roadRef = useRef<HTMLDivElement>(null);
-  
-  // Initialize reduced motion from system preference
-  const [isReducedMotion, setIsReducedMotion] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    }
-    return false;
-  });
-
-  // Listen for changes to reduced motion preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handler = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
-
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Road animation (subtle parallax)
-  const roadY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-
-  if (isReducedMotion) {
-    // Fallback to static timeline for reduced motion
-    return (
-      <section id="career-journey" className={styles.careerJourney}>
-        <div className="container">
-          <div className={styles.header}>
-            <h2 className={styles.sectionTitle}>
-              Career <span className="gradient-text">Journey</span>
-            </h2>
-            <p className={styles.subtitle}>
-              A roadmap of my technical evolution and professional milestones
-            </p>
-          </div>
-
-          <div className={styles.staticTimeline}>
-            {milestones.map((milestone) => (
-              <div key={milestone.id} className={styles.staticMilestone}>
-                <div className={styles.staticMarker}>
-                  {milestone.type === "education" && <FaGraduationCap />}
-                  {milestone.type === "work" && <FaBriefcase />}
-                  {milestone.type === "project" && <FaRocket />}
-                </div>
-                <div className={styles.staticContent}>
-                  <span className={styles.phase}>{milestone.phase}</span>
-                  <span className={styles.period}>{milestone.period}</span>
-                  <h3 className={styles.title}>{milestone.title}</h3>
-                  <h4 className={styles.organization}>{milestone.organization}</h4>
-                  <p className={styles.description}>{milestone.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   return (
     <section id="career-journey" className={styles.careerJourney} ref={containerRef}>
       <div className="container">
         <div className={styles.header}>
-          <motion.h2 
+          <motion.h2
             className={styles.sectionTitle}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6 }}
           >
-            Career <span className="gradient-text">Journey</span>
+            My <span className="gradient-text">Journey</span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             className={styles.subtitle}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            A roadmap of my technical evolution and professional milestones
+            A timeline of my professional growth and technical milestones
           </motion.p>
         </div>
 
-        <div className={styles.journeyWrapper}>
-          {/* Road */}
-          <motion.div 
-            className={styles.road} 
-            ref={roadRef}
-            style={{ y: roadY }}
-          >
-            <div className={styles.roadTexture} />
-            <div className={styles.laneMarkers} />
-          </motion.div>
+        <div className={styles.timelineWrapper}>
+          {/* Central Beam Line */}
+          <div className={styles.beamLine}>
+            <motion.div
+              className={styles.beamProgress}
+              style={{ scaleY, height: "100%" }}
+            />
+          </div>
+
+          <div className={styles.startMarker} />
 
           {/* Milestones */}
-          <div className={styles.milestonesContainer}>
-            {milestones.map((milestone, index) => (
-              <MilestoneCard 
-                key={milestone.id} 
-                milestone={milestone} 
-                index={index} 
-              />
-            ))}
-          </div>
+          {milestones.map((milestone, index) => (
+            <MilestoneCard
+              key={milestone.id}
+              milestone={milestone}
+              index={index}
+            />
+          ))}
         </div>
       </div>
     </section>
