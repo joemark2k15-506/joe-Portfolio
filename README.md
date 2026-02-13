@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# Hi there, I'm Joe Mark M 👋
 
-First, run the development server:
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=600&size=28&pause=1000&color=00D4FF&center=true&vCenter=true&width=500&lines=Full-Stack+Engineer;MERN+Stack+Developer;React+Native+Specialist;Building+High-Performance+Apps)](https://git.io/typing-svg)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Recent MCA Graduate (2025)** building scalable web & mobile applications.  
+Passionate about clean architecture, responsive design, and exceptional user experiences.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[![GitHub](https://img.shields.io/badge/GitHub-JoeMarkM-181717?style=for-the-badge&logo=github)](https://github.com/joemark2k15-506)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Joe_Mark-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/joe-mark-9b921a380)
+[![Email](https://img.shields.io/badge/Email-Contact_Me-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:joemark2k15@gmail.com)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+</div>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=react,nextjs,ts,tailwind,nodejs,express,mongodb,java,git,vscode,postman,figma" />
+</div>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📂 Featured Projects
 
-## Deploy on Vercel
+### 🛍️ [Consumer Goods Seller](https://github.com/joemark2k15-506/electric-shop)
+> **Modern E-Commerce Platform**
+> A comprehensive MERN stack solution with real-time inventory, dynamic catalog, and modular architecture.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Stack:** React.js, Node.js, Express.js, MongoDB, Tailwind CSS
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🎧 [Vibe Player](https://github.com/joemark2k15-506/vibe-Player)
+> **High-Fidelity Mobile Audio**
+> Ultra-performance audio player supporting FLAC/ALAC with 60fps animations.
+
+- **Stack:** React Native, Expo, TypeScript, FFmpeg, Reanimated
+
+---
+
+## 🛠️ Run Locally
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/joemark2k15-506/joe-Portfolio.git
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+---
+
+<div align="center">
+  <p>Open validation for full-time <b>Software Engineer</b> roles.</p>
+  <p>© 2026 Joe Mark M</p>
+</div>
