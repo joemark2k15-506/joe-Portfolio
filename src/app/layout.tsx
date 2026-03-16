@@ -9,6 +9,7 @@ import CommandPalette from "@/components/ui/command-palette";
 import BackToTop from "@/components/ui/back-to-top";
 import { Toaster } from "react-hot-toast";
 import SmoothScrolling from "@/components/providers/smooth-scrolling";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -63,6 +64,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${spaceGrotesk.variable} ${outfit.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-J6XHYQ06GW`}
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-J6XHYQ06GW');
+          `}
+        </Script>
         <ThemeProvider>
           <SmoothScrolling>
             <Toaster position="bottom-right" />
