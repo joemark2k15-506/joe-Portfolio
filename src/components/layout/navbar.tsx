@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValueEvent } from "framer-motion";
+import { useLenis } from "@studio-freight/react-lenis";
 import { useTheme } from "@/components/theme-provider";
 import ThemeSelector from "@/components/ui/theme-selector";
 import { createPortal } from "react-dom";
@@ -42,6 +43,7 @@ export default function Navbar() {
 
   // Extract section IDs for the hook
   const sectionIds = navLinks.map(link => link.href.substring(1));
+  const lenis = useLenis();
   const activeSection = useActiveSection(sectionIds, 150);
 
   useEffect(() => {
@@ -64,13 +66,16 @@ export default function Navbar() {
   useEffect(() => {
     if (mobileMenuOpen || themeMenuOpen) {
       document.body.style.overflow = "hidden";
+      if (lenis) lenis.stop();
     } else {
       document.body.style.overflow = "";
+      if (lenis) lenis.start();
     }
     return () => {
       document.body.style.overflow = "";
+      if (lenis) lenis.start();
     };
-  }, [mobileMenuOpen, themeMenuOpen]);
+  }, [mobileMenuOpen, themeMenuOpen, lenis]);
 
   const { scrollYProgress, scrollY } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -93,12 +98,17 @@ export default function Navbar() {
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
-    const element = document.getElementById(href.substring(1));
-    if (element) {
-      // Lenis handles smooth scroll automatically if configured on html/body, 
-      // but for anchor links we might need to intercept if using lenis instance directly.
-      // Assuming native scroll behavior is patched or sufficient.
-      element.scrollIntoView({ behavior: "smooth" });
+    if (lenis) {
+      lenis.scrollTo(href, { 
+        offset: -80,
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+      });
+    } else {
+      const element = document.getElementById(href.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
