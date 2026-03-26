@@ -41,27 +41,68 @@
 
 .preview {
   width: 100%;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  border: 2px solid transparent;
+  height: 50px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: var(--shadow-sm);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.iconOverlay {
+  font-size: 1.25rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  opacity: 0.8;
+  transition: all var(--transition-fast);
+}
+
+.themeBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  position: relative;
+  padding: var(--space-sm);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.themeBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.themeBtn:hover .iconOverlay {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 .name {
   font-size: 0.8125rem;
   font-weight: 600;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.themeBtn:hover .name,
+.themeBtn.active .name {
   color: var(--text-primary);
 }
 
 .activeRing {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: -2px;
   border: 2px solid var(--primary);
-  border-radius: var(--radius-md);
+  border-radius: calc(var(--radius-lg) + 2px);
   pointer-events: none;
+  box-shadow: 0 0 15px var(--glow-primary);
 }
 
 .themeBtn.active .preview {

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValueEvent } from "framer-motion";
 import { useTheme } from "@/components/theme-provider";
 import ThemeSelector from "@/components/ui/theme-selector";
+import { createPortal } from "react-dom";
 import { FiDownload } from "react-icons/fi";
 import styles from "./navbar.module.css";
 import { useActiveSection } from "@/hooks/use-active-section";
@@ -17,6 +18,18 @@ const navLinks = [
   { href: "#skills", label: "Skills" },
   { href: "#contact", label: "Contact" },
 ];
+
+function ThemePortal({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(children, document.body);
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -47,9 +60,9 @@ export default function Navbar() {
     };
   }, [themeMenuOpen]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll when mobile menu or theme menu is open
   useEffect(() => {
-    if (mobileMenuOpen) {
+    if (mobileMenuOpen || themeMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -57,7 +70,7 @@ export default function Navbar() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, themeMenuOpen]);
 
   const { scrollYProgress, scrollY } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -186,15 +199,43 @@ export default function Navbar() {
             </motion.button>
 
             <AnimatePresence>
-              {themeMenuOpen && (
-                <motion.div
-                  className={styles.themeSelectorPopover}
-                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                >
-                  <ThemeSelector onSelect={() => setThemeMenuOpen(false)} />
-                </motion.div>
+              {themeMenuOpen && mounted && (
+                <>
+                  {/* Desktop Popover - Rendered in-place for relative positioning */}
+                  <div className={styles.desktop}>
+                    <motion.div
+                      className={styles.themeSelectorPopover}
+                      initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                    >
+                      <ThemeSelector onSelect={() => setThemeMenuOpen(false)} />
+                    </motion.div>
+                  </div>
+
+                  {/* Mobile Bottom Sheet - Rendered in portal for top-layering */}
+                  <ThemePortal>
+                    <div className={styles.mobile}>
+                      <motion.div
+                        className={styles.themeOverlay}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setThemeMenuOpen(false)}
+                      />
+                      <motion.div
+                        className={styles.themeBottomSheet}
+                        initial={{ y: "100%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                      >
+                        <div className={styles.sheetHandle} />
+                        <ThemeSelector onSelect={() => setThemeMenuOpen(false)} />
+                      </motion.div>
+                    </div>
+                  </ThemePortal>
+                </>
               )}
             </AnimatePresence>
           </div>

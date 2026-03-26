@@ -365,11 +365,36 @@
 
 @media (max-width: 480px) {
   .filterBtn {
-    padding: 8px 16px;
-    font-size: 0.85rem;
+    padding: 8px 12px;
+    font-size: 0.8rem;
   }
 
   .imageContainer3D {
-    height: 220px;
+    height: 180px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .cardContent {
+    padding: var(--space-md);
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .filters {
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .filterBtn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
   }
 }

@@ -56,6 +56,15 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f9fa" },
+    { media: "(prefers-color-scheme: dark)", color: "#050a14" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -85,10 +94,10 @@ export default function RootLayout({
             <a href="#main" className="skip-to-content">
               Skip to content
             </a>
-            <Navbar />
             <main id="main">{children}</main>
             <Footer />
             <BackToTop />
+            <Navbar />
           </SmoothScrolling>
         </ThemeProvider>
       </body>

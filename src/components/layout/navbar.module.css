@@ -9,7 +9,7 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  z-index: var(--z-sticky);
+  z-index: var(--z-modal);
   width: fit-content;
   max-width: 90vw;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -230,7 +230,52 @@
   top: calc(100% + 12px);
   right: 0;
   z-index: 10000;
-  min-width: 280px;
+  min-width: 300px;
+  filter: drop-shadow(var(--shadow-xl));
+}
+
+.themeOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 99998;
+}
+
+.themeBottomSheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-top: 1px solid var(--glass-border);
+  border-radius: 24px 24px 0 0;
+  padding: var(--space-xl) var(--space-lg) calc(var(--space-xl) + 20px);
+  z-index: 99999;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.sheetHandle {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  margin: 0 auto var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .themeSelectorPopover {
+    right: -50px; /* Offset to center better relative to the toggle */
+    min-width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .themeSelectorPopover {
+    display: none; /* Handled by bottom sheet */
+  }
 }
 
 /* ===========================
