@@ -29,7 +29,6 @@
   pointer-events: none;
   z-index: 0;
   animation: auroraPulse 8s ease-in-out infinite alternate;
-  will-change: opacity;
 }
 
 @keyframes auroraPulse {
@@ -178,7 +177,6 @@
   gap: var(--space-sm);
   justify-content: center;
   border: none;
-  will-change: transform;
 }
 
 .primaryBtn {
@@ -310,7 +308,6 @@
   border: 1px dashed var(--border);
   border-radius: 50%;
   animation: orbitSpin 30s linear infinite;
-  will-change: transform;
 }
 
 .orbitRing2 {
@@ -354,7 +351,6 @@
   color: var(--text-primary);
   /* Counter-rotate to keep icons upright */
   animation: orbitCounterSpin 30s linear infinite;
-  will-change: transform;
 }
 
 .orbitIcon2 {
@@ -400,7 +396,6 @@
   filter: blur(60px);
   z-index: -1;
   animation: glowPulse 4s ease-in-out infinite alternate;
-  will-change: opacity, transform;
 }
 
 @keyframes glowPulse {

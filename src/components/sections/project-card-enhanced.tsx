@@ -101,7 +101,7 @@ export default function ProjectCardEnhanced({ project, onClick }: ProjectCardPro
             z: imgZ // Parallax lift
           }}
         >
-          <div className={styles.imagePerspective}>
+          <motion.div className={styles.imagePerspective} layout style={{ position: "relative" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentImageIndex}
@@ -128,7 +128,7 @@ export default function ProjectCardEnhanced({ project, onClick }: ProjectCardPro
                 <div key={i} className={`${styles.progressDot} ${i === currentImageIndex ? styles.activeDot : ""}`} />
               ))}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Layer 2: Content (Separated & Floating High) */}

@@ -1,7 +1,7 @@
 export type ProjectTag = "All" | "Web" | "Mobile" | "Design";
 
 export interface Project {
-  id: number;
+  id: string;
   slug: string;
   title: string;
   subtitle: string;
@@ -21,7 +21,7 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 1,
+    id: "project-1",
     slug: "consumer-goods-seller",
     title: "Consumer Goods Seller",
     subtitle: "Modern E-commerce Platform",
@@ -54,7 +54,7 @@ export const projects: Project[] = [
     type: "web",
   },
   {
-    id: 2,
+    id: "project-2",
     slug: "vibe-player",
     title: "Vibe Player",
     subtitle: "High-Fidelity Audio Experience",

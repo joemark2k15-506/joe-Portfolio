@@ -53,54 +53,46 @@ export default function CustomCursor() {
     setCursorVariant("default");
   }, [pathname]);
 
-  // Handle hover states
+  // Handle hover states with Event Delegation
   useEffect(() => {
-    const handleMouseEnter = () => setCursorVariant("hover");
-    const handleMouseLeave = () => setCursorVariant("default");
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const selectors = "a, button, .hoverable, [role='button'], input, textarea, select";
+      
+      // Check if target or its parent matches the selectors
+      if (target.closest(selectors)) {
+        setCursorVariant("hover");
+      }
+    };
 
-    const selectors = "a, button, .hoverable, [role='button'], input, textarea, select";
-    const links = document.querySelectorAll(selectors);
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const selectors = "a, button, .hoverable, [role='button'], input, textarea, select";
+      
+      if (target.closest(selectors)) {
+        setCursorVariant("default");
+      }
+    };
 
-    links.forEach((link) => {
-      link.addEventListener("mouseenter", handleMouseEnter);
-      link.addEventListener("mouseleave", handleMouseLeave);
-    });
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-          const newLinks = (mutation.target as Element).querySelectorAll(selectors);
-          newLinks.forEach((link) => {
-            link.removeEventListener("mouseenter", handleMouseEnter);
-            link.removeEventListener("mouseleave", handleMouseLeave);
-            link.addEventListener("mouseenter", handleMouseEnter);
-            link.addEventListener("mouseleave", handleMouseLeave);
-          });
-        }
-      });
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
+    document.body.addEventListener("mouseover", handleMouseOver);
+    document.body.addEventListener("mouseout", handleMouseOut);
 
     return () => {
-      links.forEach((link) => {
-        link.removeEventListener("mouseenter", handleMouseEnter);
-        link.removeEventListener("mouseleave", handleMouseLeave);
-      });
-      observer.disconnect();
+      document.body.removeEventListener("mouseover", handleMouseOver);
+      document.body.removeEventListener("mouseout", handleMouseOut);
     };
-  }, [pathname]);
+  }, []);
 
   const variants = {
     default: {
       scale: 1,
       rotate: 0,
-      backgroundColor: "white",
+      backgroundColor: "rgba(255, 255, 255, 1)",
     },
     hover: {
       scale: 1.3,
       rotate: 0,
-      backgroundColor: "white",
+      backgroundColor: "rgba(255, 255, 255, 1)",
     },
   };
 
@@ -108,14 +100,14 @@ export default function CustomCursor() {
     default: {
       scale: 1,
       opacity: 1,
-      backgroundColor: "transparent",
+      backgroundColor: "rgba(255, 255, 255, 0)",
       borderWidth: "1px",
       borderColor: "rgba(255, 255, 255, 0.6)",
     },
     hover: {
       scale: 1.5,
       opacity: 1,
-      backgroundColor: "transparent",
+      backgroundColor: "rgba(255, 255, 255, 0)",
       borderColor: "var(--accent)",
     },
   };

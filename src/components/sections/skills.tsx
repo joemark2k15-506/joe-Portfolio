@@ -53,8 +53,8 @@ export default function Skills() {
   const categories = ["Full Stack", "Frontend", "Backend", "Mobile", "Tools"];
 
   return (
-    <section id="skills" className={`${styles.skills} section w-full overflow-hidden`}>
-      <div className="w-full max-w-6xl mx-auto px-6">
+    <section id="skills" className={`${styles.skills} section`}>
+      <div className="container">
         <div className={styles.header}>
           <motion.h2
             className={styles.title}

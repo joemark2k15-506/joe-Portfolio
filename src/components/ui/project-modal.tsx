@@ -226,7 +226,7 @@ export default function ProjectModal({ selectedProject, isOpen, onClose }: Proje
                                 animate={floatAnimation}
                             >
                                 <DeviceFrame type={isDesktop ? "desktop" : "mobile"}>
-                                    <div className="relative">
+                                    <motion.div layout className="relative" style={{ position: "relative" }}>
                                         <AnimatePresence mode="wait">
                                             <motion.div
                                                 key={currentImageIndex}
@@ -234,6 +234,7 @@ export default function ProjectModal({ selectedProject, isOpen, onClose }: Proje
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
                                                 transition={{ duration: 0.5 }}
+                                                layoutId={`project-image-${selectedProject.id}`}
                                             >
                                                 {/* CONDITIONAL IMAGE LAYOUT */}
                                                 {isDesktop ? (
@@ -315,7 +316,7 @@ export default function ProjectModal({ selectedProject, isOpen, onClose }: Proje
                                                 ))}
                                             </div>
                                         )}
-                                    </div>
+                                    </motion.div>
                                 </DeviceFrame>
 
                                 {/* Ground shadow */}

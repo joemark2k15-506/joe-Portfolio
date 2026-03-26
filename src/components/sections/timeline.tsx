@@ -6,7 +6,7 @@ import { FaGraduationCap, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 import styles from "./timeline.module.css";
 
 interface TimelineItem {
-  id: number;
+  id: string;
   year: string;
   title: string;
   organization: string;
@@ -16,7 +16,7 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
-    id: 3,
+    id: "roadmap-3",
     year: "Jun - Nov 2025",
     title: "Advanced Full Stack Training",
     organization: "Apollo Computer Education, Madurai",
@@ -24,7 +24,7 @@ const timelineData: TimelineItem[] = [
     type: "work",
   },
   {
-    id: 1,
+    id: "roadmap-1",
     year: "2023 - 2025",
     title: "Master of Computer Applications",
     organization: "Arul Anandar College, Madurai",
@@ -32,7 +32,7 @@ const timelineData: TimelineItem[] = [
     type: "education",
   },
   {
-    id: 2,
+    id: "roadmap-2",
     year: "Sep - Oct 2024",
     title: "Full Stack Engineer Intern",
     organization: "XYLOINC Technologies, Coimbatore",
@@ -40,7 +40,7 @@ const timelineData: TimelineItem[] = [
     type: "work",
   },
   {
-    id: 4,
+    id: "roadmap-4",
     year: "2019 - 2022",
     title: "B.Com (Computer Applications)",
     organization: "NMS SVN College, Madurai",
@@ -48,7 +48,7 @@ const timelineData: TimelineItem[] = [
     type: "education",
   },
   {
-    id: 5,
+    id: "roadmap-5",
     year: "2017 - 2018",
     title: "Higher Secondary Education",
     organization: "St. Britto Hr. Sec. School, Madurai",
@@ -56,7 +56,7 @@ const timelineData: TimelineItem[] = [
     type: "education",
   },
   {
-    id: 6,
+    id: "roadmap-6",
     year: "2015 - 2016",
     title: "Secondary Education",
     organization: "St. Britto Hr. Sec. School, Madurai",

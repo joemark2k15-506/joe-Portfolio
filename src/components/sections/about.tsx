@@ -57,11 +57,11 @@ function Counter({ value, suffix, delay }: { value: number; suffix: string; dela
 
 export default function About() {
   return (
-    <section id="about" className={`${styles.about} section w-full overflow-hidden`}>
-      <div className="w-full max-w-6xl mx-auto px-6">
-        <div className={`${styles.grid} flex flex-col md:flex-row md:items-start md:gap-16`}>
+    <section id="about" className={`${styles.about} section`}>
+      <div className="container">
+        <div className={styles.grid}>
           {/* Left — Profile Image + Specialty Cards */}
-          <div className={`${styles.imageSection} w-full md:w-1/2`}>
+          <div className={styles.imageSection}>
             <motion.div
               className={styles.imageWrapper}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -104,7 +104,7 @@ export default function About() {
           </div>
 
           {/* Right — Content */}
-          <div className={`${styles.content} w-full md:w-1/2`}>
+          <div className={styles.content}>
             <motion.h2
               className={styles.title}
               initial={{ opacity: 0, x: 20 }}
