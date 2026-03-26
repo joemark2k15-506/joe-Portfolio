@@ -126,8 +126,8 @@ export default function CareerJourney() {
   });
 
   return (
-    <section id="career-journey" className={styles.careerJourney} ref={containerRef}>
-      <div className="container">
+    <section id="career-journey" className={`${styles.careerJourney} w-full overflow-hidden`} ref={containerRef}>
+      <div className="w-full max-w-6xl mx-auto px-6">
         <div className={styles.header}>
           <motion.h2
             className={styles.sectionTitle}
@@ -149,7 +149,7 @@ export default function CareerJourney() {
           </motion.p>
         </div>
 
-        <div className={styles.timelineWrapper}>
+        <div className={`${styles.timelineWrapper} w-full`}>
           {/* Central Beam Line */}
           <div className={styles.beamLine}>
             <motion.div

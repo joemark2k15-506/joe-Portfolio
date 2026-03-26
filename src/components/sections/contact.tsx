@@ -61,8 +61,8 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className={`${styles.contact} section`}>
-      <div className="container">
+    <section id="contact" className={`${styles.contact} section w-full overflow-hidden`}>
+      <div className="w-full max-w-6xl mx-auto px-6">
         <div className={styles.header}>
           <motion.h2
             className={styles.title}
@@ -84,9 +84,9 @@ export default function Contact() {
           </motion.p>
         </div>
 
-        <div className={styles.grid}>
+        <div className={`${styles.grid} flex flex-col md:flex-row md:items-start md:gap-12`}>
           {/* Left Side Info */}
-          <div className={styles.info}>
+          <div className={`${styles.info} w-full md:w-1/3`}>
             <motion.div
               className={styles.availabilityBadge}
               initial={{ opacity: 0, x: -20 }}
@@ -122,7 +122,7 @@ export default function Contact() {
 
           {/* Right Side Terminal Form */}
           <motion.div
-            className={styles.formContainer}
+            className={`${styles.formContainer} w-full md:w-2/3`}
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}

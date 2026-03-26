@@ -84,8 +84,8 @@ export default function Projects() {
   }, [activeFilter, allProjects]);
 
   return (
-    <section id="work" className={`${styles.projects} section`}>
-      <div className="container">
+    <section id="work" className={`${styles.projects} section w-full overflow-hidden`}>
+      <div className="w-full max-w-6xl mx-auto px-6">
         <div className={styles.header}>
           <motion.h2
             className={styles.sectionTitle}

@@ -30,11 +30,11 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className={styles.hero}>
-      <div className={styles.content}>
+    <section id="home" className={`${styles.hero} w-full overflow-hidden`}>
+      <div className={`${styles.content} w-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row md:items-center md:justify-between md:gap-10`}>
         {/* Left — Text Content */}
         <motion.div
-          className={styles.textContainer}
+          className={`${styles.textContainer} w-full md:w-1/2`}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -150,7 +150,7 @@ export default function Hero() {
 
         {/* Right — Profile Image with Orbiting Icons */}
         <motion.div
-          className={styles.profileSection}
+          className={`${styles.profileSection} w-full md:w-1/2 flex justify-center md:justify-end`}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 1, type: "spring", bounce: 0.3 }}
@@ -202,7 +202,7 @@ export default function Hero() {
 
         {/* Scroll Indicator */}
         <motion.div
-          className={styles.scrollIndicator}
+          className={`${styles.scrollIndicator} hidden lg:flex`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 1 }}
