@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRef, useCallback } from "react";
 import {
   SiReact,
   SiTypescript,
@@ -29,7 +30,6 @@ interface Skill {
 const skills: Skill[] = [
   { name: "MERN Stack", category: "Full Stack", level: 90, icon: <div className={styles.mernIcons}><SiMongodb /><SiExpress /><SiReact /><SiNodedotjs /></div>, color: "#61DAFB" },
   { name: "Java Full Stack", category: "Full Stack", level: 85, icon: <FaJava />, color: "#ED8B00" },
-  { name: "Spring Boot", category: "Full Stack", level: 80, icon: <SiSpringboot />, color: "#6DB33F" },
 
   { name: "React.js", category: "Frontend", level: 88, icon: <SiReact />, color: "#61DAFB" },
   { name: "TypeScript", category: "Frontend", level: 82, icon: <SiTypescript />, color: "#3178C6" },
@@ -48,6 +48,86 @@ const skills: Skill[] = [
   { name: "Postman", category: "Tools", level: 85, icon: <SiPostman />, color: "#FF6C37" },
   { name: "Netlify", category: "Tools", level: 85, icon: <SiNetlify />, color: "#00C7B7" },
 ];
+
+function HoloCard({ skill, index }: { skill: Skill; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Calculate rotation (max ±15 degrees)
+    const rotateY = ((x - centerX) / centerX) * 15;
+    const rotateX = ((centerY - y) / centerY) * 15;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+  }, []);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      className={styles.cardWrapper}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 40, scale: 0.85 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{
+        duration: 0.5,
+        delay: 0.08 + index * 0.06,
+        type: "spring",
+        stiffness: 180,
+        damping: 16,
+      }}
+      style={{ "--brand-color": skill.color } as React.CSSProperties}
+    >
+      <div className={styles.card}>
+        {/* Scan-line overlay */}
+        <div className={styles.scanLines} />
+
+        {/* Orbital glow ring */}
+        <div className={styles.orbitalRing} />
+
+        {/* Particle dots */}
+        <div className={styles.particles} />
+
+        {/* Floating icon */}
+        <div className={styles.iconZone}>
+          <div className={styles.icon}>{skill.icon}</div>
+        </div>
+
+        {/* Skill name */}
+        <div className={styles.skillName}>{skill.name}</div>
+
+        {/* Proficiency bar */}
+        <div className={styles.proficiencyBar}>
+          <motion.div
+            className={styles.proficiencyFill}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: skill.level / 100 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, delay: 0.3 + index * 0.05, ease: "easeOut" }}
+          />
+        </div>
+      </div>
+
+      {/* Neon floor glow */}
+      <div className={styles.floorGlow} />
+    </motion.div>
+  );
+}
 
 export default function Skills() {
   const categories = ["Full Stack", "Frontend", "Backend", "Mobile", "Tools"];
@@ -76,7 +156,7 @@ export default function Skills() {
           </motion.p>
         </div>
 
-        {categories.map((category, catIndex) => (
+        {categories.map((category) => (
           <div key={category} className={styles.category}>
             <motion.h3
               className={styles.categoryTitle}
@@ -92,28 +172,7 @@ export default function Skills() {
               {skills
                 .filter((skill) => skill.category === category)
                 .map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    className={styles.hexagonWrapper}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.4,
-                      delay: 0.1 + index * 0.05,
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15
-                    }}
-                    style={{ "--brand-color": skill.color } as React.CSSProperties}
-                  >
-                    <div className={styles.proficiencyRing} />
-                    <div className={styles.hexagon}>
-                      <div className={styles.icon}>{skill.icon}</div>
-                    </div>
-                    <div className={styles.skillName}>{skill.name}</div>
-
-                  </motion.div>
+                  <HoloCard key={skill.name} skill={skill} index={index} />
                 ))}
             </div>
           </div>

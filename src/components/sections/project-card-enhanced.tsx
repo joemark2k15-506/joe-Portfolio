@@ -79,6 +79,7 @@ export default function ProjectCardEnhanced({ project, onClick }: ProjectCardPro
       onMouseLeave={handleMouseLeave}
       style={{
         perspective: 1200,
+        position: "relative",
       }}
     >
       <motion.div
@@ -101,7 +102,7 @@ export default function ProjectCardEnhanced({ project, onClick }: ProjectCardPro
             z: imgZ // Parallax lift
           }}
         >
-          <motion.div className={styles.imagePerspective} layout style={{ position: "relative" }}>
+          <div className={`${styles.imagePerspective}`} style={{ position: "relative" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentImageIndex}
@@ -110,7 +111,6 @@ export default function ProjectCardEnhanced({ project, onClick }: ProjectCardPro
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
                 style={{ width: "100%", height: "100%", position: "absolute" }}
-                layoutId={`project-image-${project.id}`}
               >
                 <Image
                   src={allImages[currentImageIndex]}
@@ -128,7 +128,7 @@ export default function ProjectCardEnhanced({ project, onClick }: ProjectCardPro
                 <div key={i} className={`${styles.progressDot} ${i === currentImageIndex ? styles.activeDot : ""}`} />
               ))}
             </div>
-          </motion.div>
+          </div>
         </motion.div>
 
         {/* Layer 2: Content (Separated & Floating High) */}
