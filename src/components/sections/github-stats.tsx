@@ -64,7 +64,7 @@ export default function GitHubStats() {
         ))}
       </div>
       {stats.isFallback && (
-        <p className={styles.fallbackNotice}>* Showing estimated activity</p>
+        <p className={styles.fallbackNotice}>* Showing cached or default activity (Connect API for real-time stats)</p>
       )}
     </div>
   );

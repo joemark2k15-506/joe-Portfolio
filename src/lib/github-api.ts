@@ -1,9 +1,8 @@
 const GITHUB_USERNAME = "joemark2k15-506";
-// Handle placeholder token gracefully
-const rawToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN || "";
-const GITHUB_TOKEN = rawToken === "your_personal_access_token_here" ? "" : rawToken;
+// Use the token from env if available
+const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN || "";
 
-interface GitHubRepo {
+export interface GitHubRepo {
   id: number;
   name: string;
   description: string;
@@ -15,7 +14,7 @@ interface GitHubRepo {
   updated_at: string;
 }
 
-interface GitHubUser {
+export interface GitHubUser {
   public_repos: number;
   followers: number;
   following: number;
@@ -23,21 +22,22 @@ interface GitHubUser {
 }
 
 const getHeaders = (): HeadersInit => {
-  if (GITHUB_TOKEN) {
-    return {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: "application/vnd.github.v3+json",
-    };
-  }
-  return {
+  const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
   };
+  
+  if (GITHUB_TOKEN && GITHUB_TOKEN !== "your_personal_access_token_here") {
+    // Both 'Bearer' and 'token' prefixes work for GitHub PATs
+    headers.Authorization = `token ${GITHUB_TOKEN}`;
+  }
+  
+  return headers;
 };
 
 export async function getGitHubRepos(): Promise<GitHubRepo[]> {
   try {
     const response = await fetch(
-      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=10`,
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12&type=public`,
       { 
         headers: getHeaders(),
         next: { revalidate: 3600 } 
@@ -45,17 +45,13 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
     );
 
     if (!response.ok) {
-      // Don't throw for 403/401, just return empty to trigger fallback
-      if (response.status === 403 || response.status === 401) {
-        console.warn(`GitHub API limit hit or unauthorized (${response.status}). Using fallback data.`);
-        return [];
-      }
-      throw new Error(`Failed to fetch repos: ${response.status}`);
+      console.warn(`GitHub API repos check failed: ${response.status}`);
+      return [];
     }
 
     return await response.json();
   } catch (error) {
-    console.warn("Error fetching GitHub repos:", error);
+    console.error("Error fetching GitHub repos:", error);
     return [];
   }
 }
@@ -71,16 +67,13 @@ export async function getGitHubUser(): Promise<GitHubUser | null> {
     );
 
     if (!response.ok) {
-      if (response.status === 403 || response.status === 401) {
-        console.warn(`GitHub API limit hit or unauthorized (${response.status}). Using fallback data.`);
-        return null;
-      }
-      throw new Error(`Failed to fetch user: ${response.status}`);
+      console.warn(`GitHub API user check failed: ${response.status}`);
+      return null;
     }
 
     return await response.json();
   } catch (error) {
-    console.warn("Error fetching GitHub user:", error);
+    console.error("Error fetching GitHub user:", error);
     return null;
   }
 }
@@ -89,19 +82,19 @@ export async function getGitHubStats() {
   try {
     const [user, repos] = await Promise.all([getGitHubUser(), getGitHubRepos()]);
 
-    if (!user || user.public_repos === undefined) {
-      // Fallback data if API fails or no token
+    if (!user) {
+      // Hard fallback if user fetch fails entirely
       return {
-        repos: 12,
-        followers: 45,
-        totalStars: 128,
-        totalForks: 32,
+        repos: 5, // Corrected to user's real count as approximate
+        followers: 0,
+        totalStars: 0,
+        totalForks: 0,
         isFallback: true
       };
     }
 
-    const totalStars = repos ? repos.reduce((sum, repo) => sum + repo.stargazers_count, 0) : 0;
-    const totalForks = repos ? repos.reduce((sum, repo) => sum + repo.forks_count, 0) : 0;
+    const totalStars = repos ? repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0) : 0;
+    const totalForks = repos ? repos.reduce((sum, repo) => sum + (repo.forks_count || 0), 0) : 0;
 
     return {
       repos: user.public_repos,
@@ -113,10 +106,10 @@ export async function getGitHubStats() {
   } catch (error) {
     console.error("Critical error in getGitHubStats:", error);
     return {
-      repos: 12,
-      followers: 45,
-      totalStars: 128,
-      totalForks: 32,
+      repos: 5,
+      followers: 0,
+      totalStars: 0,
+      totalForks: 0,
       isFallback: true
     };
   }
