@@ -21,12 +21,12 @@ export interface GitHubUser {
   created_at: string;
 }
 
-const getHeaders = (): HeadersInit => {
+const getHeaders = (includeAuth: boolean = true): HeadersInit => {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
   };
   
-  if (GITHUB_TOKEN && GITHUB_TOKEN !== "your_personal_access_token_here") {
+  if (includeAuth && GITHUB_TOKEN && GITHUB_TOKEN !== "your_personal_access_token_here") {
     // Both 'Bearer' and 'token' prefixes work for GitHub PATs
     headers.Authorization = `token ${GITHUB_TOKEN}`;
   }
@@ -35,17 +35,29 @@ const getHeaders = (): HeadersInit => {
 };
 
 export async function getGitHubRepos(): Promise<GitHubRepo[]> {
-  try {
-    const response = await fetch(
+  const fetchRepos = async (useAuth: boolean) => {
+    return await fetch(
       `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12&type=public`,
       { 
-        headers: getHeaders(),
+        headers: getHeaders(useAuth),
         next: { revalidate: 3600 } 
       }
     );
+  };
+
+  try {
+    let response = await fetchRepos(true);
+
+    // If 401 Unauthorized, retry without token
+    if (response.status === 401 && GITHUB_TOKEN) {
+      console.info("GitHub API: 401 Unauthorized with token, retrying without authentication...");
+      response = await fetchRepos(false);
+    }
 
     if (!response.ok) {
-      console.warn(`GitHub API repos check failed: ${response.status}`);
+      if (response.status !== 401) {
+        console.warn(`GitHub API repos check failed: ${response.status}`);
+      }
       return [];
     }
 
@@ -57,17 +69,29 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
 }
 
 export async function getGitHubUser(): Promise<GitHubUser | null> {
-  try {
-    const response = await fetch(
+  const fetchUser = async (useAuth: boolean) => {
+    return await fetch(
       `https://api.github.com/users/${GITHUB_USERNAME}`,
       { 
-        headers: getHeaders(),
+        headers: getHeaders(useAuth),
         next: { revalidate: 3600 } 
       }
     );
+  };
+
+  try {
+    let response = await fetchUser(true);
+
+    // If 401 Unauthorized, retry without token
+    if (response.status === 401 && GITHUB_TOKEN) {
+      console.info("GitHub API: 401 Unauthorized with token, retrying without authentication...");
+      response = await fetchUser(false);
+    }
 
     if (!response.ok) {
-      console.warn(`GitHub API user check failed: ${response.status}`);
+      if (response.status !== 401) {
+        console.warn(`GitHub API user check failed: ${response.status}`);
+      }
       return null;
     }
 
